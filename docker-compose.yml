@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  malaria:
+    build : ./malaria
+    container_name: malaria
+    ports :
+      - '3000:3000'
+    volumes: 
+      - ./malaria:/malaria
+    stdin_open: true
+    tty: true # make the apps interactive

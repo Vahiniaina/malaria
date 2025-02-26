@@ -12,6 +12,17 @@
 
 ---
 
+## 🛠️ Clone the Repository
+
+To get started, clone the **MalarIA** repository from GitHub:
+
+```bash
+git clone https://github.com/Vahiniaina/malaria.git
+cd malaria
+```
+
+---
+
 ## ⚙️ Backend Setup (FastAPI)
 
 To set up the backend environment and start the FastAPI server, follow these steps:
@@ -102,11 +113,12 @@ Once the frontend is running, open your browser and go to:
 
 ---
 
-💡 **Need Help?** If you encounter any issues, check the logs or restart the services:
-```bash
-docker-compose restart
-```
-For further troubleshooting, refer to the official documentation of [FastAPI](https://fastapi.tiangolo.com/), [MongoDB](https://www.mongodb.com/), and [React](https://reactjs.org/).
+## 🔧 Troubleshooting & Resources  
+For troubleshooting, refer to the official documentation of:  
+- [FastAPI](https://fastapi.tiangolo.com/)  
+- [MongoDB](https://www.mongodb.com/)  
+- [React](https://reactjs.org/)  
 
 ---
+
 🚀 **Happy Coding!**

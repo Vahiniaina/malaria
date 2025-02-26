@@ -1,0 +1,8 @@
+/database
+/frontend_draft_working
+/malaria_backend
+/trans
+backend.tar
+frontend.tar 
+react.dockerfile
+fastapi.dockerfile

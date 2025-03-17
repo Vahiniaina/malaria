@@ -9,6 +9,8 @@ class User(Document):
     username: Indexed(str, unique=True)
     email: Indexed(EmailStr, unique=True)
     hashed_password: str
+    role: str="simple"
+    code: str=None
     first_name: Optional[str] = None 
     last_name: Optional[str] = None
     disabled: Optional[bool] = None

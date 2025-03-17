@@ -7,6 +7,8 @@ class UserAuth(BaseModel):
     email: EmailStr = Field(..., description="user email")
     username: str = Field(..., min_length=5, max_length=50, description="user username")
     password: str = Field(..., min_length=5, max_length=24, description="user password")
+    role: str="simple"
+    code: str= None
     
 
 class UserOut(BaseModel):
@@ -16,6 +18,8 @@ class UserOut(BaseModel):
     first_name: Optional[str]
     last_name: Optional[str]
     disabled: Optional[bool] = False
+    role: str
+    code: str
     
 
 class UserUpdate(BaseModel):

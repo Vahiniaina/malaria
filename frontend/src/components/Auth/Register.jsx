@@ -2,11 +2,13 @@ import {
   Button,
   Flex,
   FormControl,
+  FormLabel,
   FormErrorMessage,
   Heading,
   Input,
   useColorModeValue,
   useToast,
+  Select
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +18,7 @@ export const Register = () => {
   const {
     handleSubmit,
     register,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm();
   const navigate = useNavigate();
@@ -40,6 +43,7 @@ export const Register = () => {
       });
     }
   };
+  const role = watch("role", "");
   return (
     <Flex height="100vh" alignItems="center" justifyContent="center">
       <Flex
@@ -66,7 +70,7 @@ export const Register = () => {
               {errors.email && errors.email.message}
             </FormErrorMessage>
           </FormControl>
-          
+
           <FormControl isInvalid={errors.username}>
             <Input
               placeholder="username"
@@ -92,7 +96,51 @@ export const Register = () => {
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={errors.email}>
+          <FormControl isInvalid={errors.role}>
+            <Select
+              {...register("role", { required: "Role selection is required" })}
+              placeholder="Select role"
+              background={useColorModeValue("gray.300", "gray.600")}
+              size="lg"
+              mt={6}
+              sx={{
+                option: {
+                  background: useColorModeValue("gray.300", "gray.600")
+                },
+              }}
+            >
+              <option value="simple">Simple</option>
+              <option value="doctor">Doctor</option>
+            </Select>
+            <FormErrorMessage>
+              {errors.role && errors.role.message}
+            </FormErrorMessage>
+          </FormControl>
+
+          {/* Code Input (Visible only if Doctor is selected) */}
+          {role === "doctor" && (
+            <FormControl isInvalid={errors.code}>
+              <Input
+                placeholder="Enter doctor code"
+                type="text"
+                backdropBlur="gray.600"
+                size="lg"
+                mt={6}
+                {...register("code", {
+                  required: role === "doctor" ? "Doctor code is required" : false,
+                  minLength: {
+                    value: 4,
+                    message: "Code must be at least 4 characters",
+                  },
+                })}
+              />
+              <FormErrorMessage>
+                {errors.code && errors.code.message}
+              </FormErrorMessage>
+            </FormControl>
+          )}
+
+          <FormControl isInvalid={errors.password}>
             <Input
               placeholder="Password"
               background={useColorModeValue("gray.300", "gray.600")}

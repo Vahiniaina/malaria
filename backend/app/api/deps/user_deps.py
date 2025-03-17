@@ -10,7 +10,10 @@ from schemas.auth_schema import TokenPayload
 
 reuseable_oauth = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/auth/login",
-    scheme_name="JWT"
+    scheme_name="JWT",
+    scopes={"simple":"For all users with diagnostic service access.",
+           "doctor":"For users with diag and treatment services accesss.",
+           "admin": "For admin users with diag, treat and users managing service access"}
 )
 
 

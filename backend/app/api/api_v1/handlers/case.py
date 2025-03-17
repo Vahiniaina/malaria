@@ -63,6 +63,12 @@ async def update(case_id: UUID,  current_user: User = Depends(get_current_user))
 
 
 
+@case_router.get('/add_case_to_knowledge_base/{case_id}', summary="add case to knowledge base", response_model=CaseOut)
+async def update(case_id: UUID,  current_user: User = Depends(get_current_user)):
+    return await CaseService.add_case_to_knowledge_base(current_user, case_id)
+
+
+
 
 @case_router.get('/get_suggestion/{case_id}', summary="get suggestion", response_model=CaseOut)
 async def update(case_id: UUID,  current_user: User = Depends(get_current_user)):

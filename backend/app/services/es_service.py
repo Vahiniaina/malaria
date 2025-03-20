@@ -50,7 +50,7 @@ class ExpertSystem:
                     (defrule change
                         ?p <- (patient (id \"{self.patient_id}\"))
                         =>
-                        (modify ?p ({symptom} {clips.Symbol(value)}))
+                        (modify ?p ({symptom} {value}))
                     )
                     (run)
                     (undefrule change)
@@ -103,11 +103,11 @@ class ExpertSystem:
     
 
     def get_treat(self):
-        result= {"treatment": 
-                            {
-                                "treatment": "pas de treatment",
-                            } 
-                }
+        result={}
+        for f in list(self.env.facts()):
+             if f.template.name=='traitement':
+                 result=f["medicament"]
+                 
         return result
     
 
@@ -128,9 +128,13 @@ if __name__ == "__main__":
 
     id="vkhkhchckh"
     system=ExpertSystem(id)
+    # system.add_symptom( "enceinte", "TRUE")
     system.add_symptom( "fievre", "TRUE")
-    system.add_symptom( "toux", "TRUE")
+    # system.add_symptom( "enceinte_trim", "2em")
+    # system.add_symptom( "simple", "TRUE")
+    # system.add_symptom( "derniers_localisation", "AntananarivoV d")
+    system.add_symptom( "domicile", "Ambatoboeny")
     system.run()
-    print(system.get_diag())
+    print(system.get_treat())
 
-    system.env
+    # print(list(system.env.facts()))

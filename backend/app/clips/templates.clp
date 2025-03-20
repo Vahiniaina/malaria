@@ -5,15 +5,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;	Patient detail
    (slot id (type STRING))
-   (slot age (type INTEGER) (range 0 100))
+   (slot age (type SYMBOL))
 ;  (slot age-cat (type SYMBOL)(allowed-symbols nourisson enfant adulte))
 ; (comment "Les zones ou le patient a ete pendant les 2 derniere semaine")
-   (multislot localisation (type SYMBOL)) 
-   (slot poids (type FLOAT))
-   (slot sexe (type SYMBOL) (allowed-symbols m f autre))
+   (multislot derniers_localisation (type SYMBOL)) 
+   (slot domicile (type SYMBOL))
+   (slot poids (type SYMBOL))
+   (slot sexe (type SYMBOL) (allowed-symbols m f ))
    (slot allaitement (type SYMBOL) (allowed-symbols FALSE TRUE))
    (slot enceinte (type SYMBOL) (allowed-symbols FALSE TRUE))
-   (slot enceinte_trim (type INTEGER) (range 1 3))
+   (slot enceinte_trim (type SYMBOL) (allowed-symbols 1er 2em 3em))
    (multislot allergie (type SYMBOL))
    (multislot antecedents_medicaux (type SYMBOL))
    (slot type_de_sang (type SYMBOL) (allowed-symbols O+ O- A+ A- B+ B- AB+ AB-))
@@ -75,13 +76,14 @@
 (deftemplate localisation
    (multislot region (type SYMBOL))
    (slot facies (type SYMBOL))
-   (slot district (type STRING))
+   (slot district (type SYMBOL))
    (slot classification (type SYMBOL)(allowed-symbols DNRS1 DNRS2 DNRS3 DNRS4))
 )
 
 
 
 (deftemplate analyse
+   (slot id (type STRING))
    (slot TDR (type SYMBOL) (allowed-symbols FALSE TRUE))
    (slot goutte_epais (type SYMBOL) (allowed-symbols FALSE TRUE))
    (slot frotti_sanguin (type SYMBOL) (allowed-symbols FALSE TRUE))
@@ -94,7 +96,8 @@
 )
 
 (deftemplate traitement
-   (slot medicament (type SYMBOL))
+   (slot id (type STRING))
+   (slot medicament (type STRING))
    (slot dose (type SYMBOL) )
    (slot duree (type INTEGER) )
    (slot surveillance (type SYMBOL))

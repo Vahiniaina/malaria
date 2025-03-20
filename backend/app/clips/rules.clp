@@ -65,38 +65,77 @@
 )
 
 
-; (defrule cas_disctrical
-; 	?patient <-(patient 
-;                     (fievre ?fievre) 
-;                     (sueurs ?sueurs) 
-;                     (fatigue ?fatigue) 
-;                     (frissons ?frissons) 
-;                     (sensation_de_froid ?sensation_de_froid) 
-;                     (maux_de_tete ?maux_de_tete) 
-;                     (douleurs_musculaires ?douleurs_musculaires) 
-;                     (vomissements ?vomissements) 
-;                     (diarrhees ?diarrhees) 
-;                     (toux ?toux) 
-;                     (deshydratation ?deshydratation) 
-;                     (simple ?simple)
-;                     (localisation ?localisation))
-;     (localisation (district ?localisation)(classification ?classification))
-;     (test (or (eq ?classification DNRS4) (eq ?classification DNRS3)))
-;     (test (or 
-;        (neq ?fievre FALSE) 
-;        (neq ?sueurs FALSE) 
-;        (neq ?fatigue FALSE) 
-;        (neq ?frissons FALSE) 
-;        (neq ?sensation_de_froid FALSE) 
-;        (neq ?maux_de_tete FALSE) 
-;        (neq ?douleurs_musculaires FALSE) 
-;        (neq ?vomissements FALSE) 
-;        (neq ?diarrhees FALSE) 
-;        (neq ?toux FALSE) 
-;        (neq ?deshydratation FALSE)))
-;     =>
-; 	(bind ?simple TRUE)
-; 	(assert (simple ?simple))
-; 	(modify ?patient (simple ?simple))
+(defrule cas_districal
+    ; (declare (salience 100))
+	(not (simple ?))
+    ?patient <- (patient 
+                    (fievre ?fievre) 
+                    (sueurs ?sueurs) 
+                    (fatigue ?fatigue) 
+                    (frissons ?frissons) 
+                    (sensation_de_froid ?sensation_de_froid) 
+                    (maux_de_tete ?maux_de_tete) 
+                    (douleurs_musculaires ?douleurs_musculaires) 
+                    (vomissements ?vomissements) 
+                    (diarrhees ?diarrhees) 
+                    (toux ?toux) 
+                    (deshydratation ?deshydratation) 
+                    (simple ?simple)
+                    (domicile ?domicile)
+                    ; (derniers_localisation first$ ?local  )
+                    ) 
 
-; )
+    (localisation (district ?domicile) (classification ?classification_domicile))
+    ; (localisation (district  ?local) (classification ?classification_localisations))
+    
+    (test (or (eq ?classification_domicile DNRS3) 
+              (eq ?classification_domicile DNRS4)
+              ))
+    (test (or 
+       (neq ?fievre FALSE) 
+       (neq ?sueurs FALSE) 
+       (neq ?fatigue FALSE) 
+       (neq ?frissons FALSE) 
+       (neq ?sensation_de_froid FALSE) 
+       (neq ?maux_de_tete FALSE) 
+       (neq ?douleurs_musculaires FALSE) 
+       (neq ?vomissements FALSE) 
+       (neq ?diarrhees FALSE) 
+       (neq ?toux FALSE) 
+       (neq ?deshydratation FALSE)))
+    =>
+    (bind ?simple TRUE) 
+    (assert (simple ?simple))
+    (modify ?patient (simple ?simple))
+)
+
+
+(defrule treat_simple
+	(not (medicament ?) )
+	?patient <- (patient (simple ?simple))
+	(test (eq ?simple TRUE))
+    =>
+	(bind ?medicament "ACT artéméther + luméfantrine ou artésunate + amodiaquine ou artésunate + méfloquine ou artésunate + sulfadoxine-pyriméthamine ou dihydro-artémisinine_arténimol + pipéraquine"
+)
+	(assert (traitement (medicament ?medicament))))
+
+(defrule treat_simple_enceinte_1trimestre
+	(not (medicament ?) )
+	?patient <- (patient (simple ?simple) (enceinte ?enceinte) (enceinte_trim ?enceinte_trim))
+	(test (eq ?simple ?enceinte TRUE))
+    (test (eq ?enceinte_trim 1))
+    =>
+	(bind ?medicament "quinine+clindamycine ou atovaquone-proguanil ")
+    (bind ?duree "7 jour")
+	(assert (traitement (medicament ?medicament) (duree ?duree))))
+
+
+(defrule treat_simple_enceinte_2trimestre
+	(not (medicament ?) )
+	?patient <- (patient (simple ?simple) (enceinte ?enceinte) (enceinte_trim ?enceinte_trim))
+	(test (eq ?simple ?enceinte TRUE))
+    (test (neq ?enceinte_trim 1))
+    =>
+	(bind ?medicament "artéméther-luméfantrine "
+)
+	(assert (traitement (medicament ?medicament))))

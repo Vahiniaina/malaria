@@ -57,6 +57,18 @@
    (slot fievre_cyclique_48 (type SYMBOL) (allowed-symbols FALSE TRUE))
    (slot fievre_cyclique_72 (type SYMBOL) (allowed-symbols FALSE TRUE))
 
+
+;;;;;;;;;;;;;;;;;;;;;;   Analyses
+   (slot TDR (type SYMBOL) (allowed-symbols FALSE TRUE))
+   (slot goutte_epais (type SYMBOL) (allowed-symbols FALSE TRUE))
+   (slot frotti_sanguin (type SYMBOL) (allowed-symbols FALSE TRUE))
+   (slot PCR (type SYMBOL) (allowed-symbols FALSE TRUE))
+   (slot HRP2 (type SYMBOL) (allowed-symbols FALSE TRUE))
+   (slot HRP3 (type SYMBOL) (allowed-symbols FALSE TRUE))
+   (slot pLDH (type SYMBOL) (allowed-symbols FALSE TRUE))
+   (slot analyse_parasitaire (type SYMBOL) (allowed-symbols falciparum vivax malariae ovale))
+   (slot stade_parasitaire (type SYMBOL))
+
 )
 
 
@@ -64,11 +76,12 @@
 
 (deftemplate diagnostique
    (slot id (type STRING))
-   (slot code_diagnostique (type SYMBOL))
+   (slot paludisme (type SYMBOL)(allowed-symbols non_confirme confirme))
    (slot degre (type SYMBOL) (allowed-symbols simple grave ))
    (slot parasite (type SYMBOL) (allowed-symbols falciparum vivax malariae ovale knowlesi))
    (slot hospitalisation (type SYMBOL) (allowed-symbols FALSE TRUE))
    (slot reanimateur (type SYMBOL) (allowed-symbols FALSE TRUE))
+   (slot suggestion (type STRING) )
 )
 
 
@@ -81,19 +94,6 @@
 )
 
 
-
-(deftemplate analyse
-   (slot id (type STRING))
-   (slot TDR (type SYMBOL) (allowed-symbols FALSE TRUE))
-   (slot goutte_epais (type SYMBOL) (allowed-symbols FALSE TRUE))
-   (slot frotti_sanguin (type SYMBOL) (allowed-symbols FALSE TRUE))
-   (slot PCR (type SYMBOL) (allowed-symbols FALSE TRUE))
-   (slot HRP2 (type SYMBOL) (allowed-symbols FALSE TRUE))
-   (slot HRP3 (type SYMBOL) (allowed-symbols FALSE TRUE))
-   (slot pLDH (type SYMBOL) (allowed-symbols FALSE TRUE))
-   (multislot analyse_parasitaire (type SYMBOL) (allowed-symbols falciparum vivax malariae ovale))
-   (slot stade_parasitaire (type SYMBOL))
-)
 
 (deftemplate traitement
    (slot id (type STRING))

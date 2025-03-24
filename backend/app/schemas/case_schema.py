@@ -25,9 +25,9 @@ class CaseOut(BaseModel):
     description: str
     symptoms: Dict[str, Any]
     analyses: Dict[str, Any]
-    treatment: Dict[str, Any]    
-    suggestion: Dict[str, Any]
+    treatment: Dict[str, Any]   
     diagnostic: Dict[str, Any]
+    patient_details: Dict[str, Any]
     patient_name: str
     status: bool
     created_at: datetime
@@ -53,7 +53,14 @@ class CaseTreatment(BaseModel):
     treatment: Dict[str, Any]
     updated_at: datetime
     
-
-class CaseSuggestion(BaseModel):
-    suggestion: Dict[str, Any]
+    
+    
+class CasePatientDetails(BaseModel):
+    patient_details: Dict[str, Any]
     updated_at: datetime
+    
+class CaseToKnowledgeBase(BaseModel):
+    symptoms: Dict[str, Any]
+    traitement: Dict[str, Any]
+    diagnostique: Dict[str, Any]
+    

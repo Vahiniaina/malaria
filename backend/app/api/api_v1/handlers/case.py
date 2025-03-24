@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends
 from models.user_model import User
 from api.deps.user_deps import get_current_user
-from schemas.case_schema import CaseOut, CaseCreate, CaseUpdate, CaseSymptoms, CaseAnalyses, CaseDiagnostic, CaseSuggestion, CaseTreatment
+from schemas.case_schema import CaseOut, CaseCreate, CasePatientDetails, CaseUpdate, CaseSymptoms, CaseAnalyses, CaseDiagnostic, CaseTreatment, CaseToKnowledgeBase
 from services.case_service import CaseService
 from models.case_model import Case
 
@@ -43,6 +43,10 @@ async def update(case_id: UUID, data: CaseSymptoms, current_user: User = Depends
     return await CaseService.update_symptoms(current_user, case_id, data)
 
 
+@case_router.put('/update_patient_details/{case_id}', summary="update patient details", response_model=CaseOut)
+async def update(case_id: UUID, data: CasePatientDetails, current_user: User = Depends(get_current_user)):
+    return await CaseService.update_patient_details(current_user, case_id, data)
+
 
 @case_router.put('/update_analyses/{case_id}', summary="update analyses", response_model=CaseOut)
 async def update(case_id: UUID, data: CaseAnalyses, current_user: User = Depends(get_current_user)):
@@ -63,13 +67,8 @@ async def update(case_id: UUID,  current_user: User = Depends(get_current_user))
 
 
 
-@case_router.get('/add_case_to_knowledge_base/{case_id}', summary="add case to knowledge base", response_model=CaseOut)
-async def update(case_id: UUID,  current_user: User = Depends(get_current_user)):
-    return await CaseService.add_case_to_knowledge_base(current_user, case_id)
+@case_router.post('/add_case_to_knowledge_base/{case_id}', summary="add case to knowledge base", response_model=CaseOut)
+async def update(data: CaseToKnowledgeBase, case_id: UUID,  current_user: User = Depends(get_current_user)):
+    return await CaseService.add_case_to_knowledge_base(data, case_id, current_user)
 
 
-
-
-@case_router.get('/get_suggestion/{case_id}', summary="get suggestion", response_model=CaseOut)
-async def update(case_id: UUID,  current_user: User = Depends(get_current_user)):
-    return await CaseService.get_suggestion(current_user, case_id)

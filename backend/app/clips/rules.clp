@@ -2,6 +2,7 @@
 (defrule cas_simple
 	(not (simple ?))
 	?patient <- (patient 
+                    (id ?id)
                     (fievre ?fievre) 
                     (sueurs ?sueurs) 
                     (fatigue ?fatigue) 
@@ -32,11 +33,13 @@
 	(bind ?simple TRUE)
 	(assert (simple ?simple))
 	(modify ?patient (simple ?simple))
+    (assert (diagnostique (id ?id)(paludisme confirme)(degre simple)))
 )
 
 (defrule cas_grave
 	(not (grave ?))
-	?patient <- (patient (troubles_respiratoires_graves ?troubles_respiratoires_graves) 
+	?patient <- (patient (id ?id)
+                         (troubles_respiratoires_graves ?troubles_respiratoires_graves) 
                          (defaillance_cardiaque ?defaillance_cardiaque) 
                          (anemie_severe ?anemie_severe) 
                          (hypoglycemie ?hypoglycemie) 
@@ -62,6 +65,7 @@
 	(bind ?grave TRUE)
 	(assert (grave ?grave))
 	(modify ?patient (grave ?grave))
+    (assert (diagnostique (id ?id)(paludisme confirme)(degre grave)))
 )
 
 
@@ -69,6 +73,7 @@
     ; (declare (salience 100))
 	(not (simple ?))
     ?patient <- (patient 
+                    (id ?id)
                     (fievre ?fievre) 
                     (sueurs ?sueurs) 
                     (fatigue ?fatigue) 
@@ -104,38 +109,39 @@
        (neq ?toux FALSE) 
        (neq ?deshydratation FALSE)))
     =>
-    (bind ?simple TRUE) 
-    (assert (simple ?simple))
-    (modify ?patient (simple ?simple))
+	(bind ?simple TRUE)
+	(assert (simple ?simple))
+	(modify ?patient (simple ?simple))
+    (assert (diagnostique (id ?id)(paludisme confirme)(degre simple)))
 )
 
 
 (defrule treat_simple
 	(not (medicament ?) )
-	?patient <- (patient (simple ?simple))
+	?patient <- (patient (id ?id)(simple ?simple))
 	(test (eq ?simple TRUE))
     =>
 	(bind ?medicament "ACT artéméther + luméfantrine ou artésunate + amodiaquine ou artésunate + méfloquine ou artésunate + sulfadoxine-pyriméthamine ou dihydro-artémisinine_arténimol + pipéraquine"
 )
-	(assert (traitement (medicament ?medicament))))
+	(assert (traitement (id ?id)(medicament ?medicament))))
 
 (defrule treat_simple_enceinte_1trimestre
 	(not (medicament ?) )
-	?patient <- (patient (simple ?simple) (enceinte ?enceinte) (enceinte_trim ?enceinte_trim))
+	?patient <- (patient (id ?id) (simple ?simple) (enceinte ?enceinte) (enceinte_trim ?enceinte_trim))
 	(test (eq ?simple ?enceinte TRUE))
     (test (eq ?enceinte_trim 1))
     =>
 	(bind ?medicament "quinine+clindamycine ou atovaquone-proguanil ")
     (bind ?duree "7 jour")
-	(assert (traitement (medicament ?medicament) (duree ?duree))))
+	(assert (traitement (id ?id)(medicament ?medicament) (duree ?duree))))
 
 
 (defrule treat_simple_enceinte_2trimestre
 	(not (medicament ?) )
-	?patient <- (patient (simple ?simple) (enceinte ?enceinte) (enceinte_trim ?enceinte_trim))
+	?patient <- (patient (id ?id)(simple ?simple) (enceinte ?enceinte) (enceinte_trim ?enceinte_trim))
 	(test (eq ?simple ?enceinte TRUE))
     (test (neq ?enceinte_trim 1))
     =>
 	(bind ?medicament "artéméther-luméfantrine "
 )
-	(assert (traitement (medicament ?medicament))))
+	(assert (traitement (id ?id)(medicament ?medicament))))

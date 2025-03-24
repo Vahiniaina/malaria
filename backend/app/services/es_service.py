@@ -1,5 +1,9 @@
 import  clips
 import tempfile
+import os
+
+from models.case_model import Case
+from schemas.case_schema import CaseToKnowledgeBase
 
 
 class ExpertSystem:
@@ -77,25 +81,11 @@ class ExpertSystem:
     def get_diag(self):
         result={}
         for f in list(self.env.facts()):
-            if f.template.name=='patient':
-                if(f["grave"]=="TRUE"):
+            if f.template.name=='diagnostique' and f["id"]==self.patient_id:
                     result={"diagnostic":
                             {
-                                "paludisme" : "confirme",
-                                "Severite":"grave"
-                            }
-                            }
-                elif(f["simple"]=="TRUE"):
-                    result={"diagnostic":
-                            {
-                                "paludisme" : "confirme",
-                                "Severite":"simple"
-                            }
-                            }
-                else:
-                    result={"diagnostic":
-                            {
-                                "paludisme" : "non confirme",
+                                "paludisme" : f["paludisme"],
+                                "Severite":f["degre"]
                             }
                             }
                     
@@ -105,24 +95,66 @@ class ExpertSystem:
     def get_treat(self):
         result={}
         for f in list(self.env.facts()):
-             if f.template.name=='traitement':
-                 result=f["medicament"]
-                 
+            if f.template.name=='traitement' and f["id"]==self.patient_id:
+                result={"treatment":
+                        {
+                            "medicament": f["medicament"], 
+                            "dose":"Voir posologie"
+                        }
+                       }
         return result
     
-
-    
-    def get_sugg(self):
-        result={"suggestion": 
-                            {
-                                "suggestion": "pas de suggestion",
-                            } 
-                }
+    @staticmethod
+    def create_clp_rule(case: Case, data: CaseToKnowledgeBase):
+        diag_line=['(id ?id)']
+        treat_line=['(id ?id)']
         
-        return result
+        for i,j in data.diagnostique.items():
+            diag_line.append(f"({clips.Symbol(i)} {clips.Symbol(j)})")
+            
+        for l,m in data.traitement.items():
+            treat_line.append(f"({clips.Symbol(l)} {clips.Symbol(m)})")
+            
+        diag_str = "\t".join(diag_line)
+        treat_str = "\t".join(treat_line)
+        
+        all_items = list(case.symptoms.items()) + list(case.analyses.items()) + list(case.patient_details.items())
+        pattern_lines = ['(id ?id)']
+        test_lines = []
 
-    
-    
+        for k, v in all_items:
+            var = f"?{clips.Symbol(k)}"
+            pattern_lines.append(f"({clips.Symbol(k)} {clips.Symbol(var)})")
+            test_lines.append(f'(test (eq {clips.Symbol(var)} {clips.Symbol(v)}))')
+
+        pattern_str = "\n   ".join(pattern_lines)
+        test_str = "\n   ".join(test_lines)
+
+        clp_rule = f"""
+                    (defrule {clips.Symbol(str(case.case_id))}
+                    ?p <- (patient 
+                                {pattern_str}
+                            )
+                    {test_str}
+                    =>
+                    (assert (diagnostic  {diag_str}))
+                    (assert (treatment  {treat_str}))
+                    )
+                    """
+        rule_text=clp_rule.strip()
+        
+        # Define directory and filename
+        dir_path = "/home/memoire/infra/v0/docker_malarIA/backend/app/clips/doctor_knowlesge_base"
+        file_name = f"{str(case.case_id)}.clp"
+        file_path = os.path.join(dir_path, file_name)
+
+        # Create directory if it doesn't exist
+        os.makedirs(dir_path, exist_ok=True)
+
+        # Write rule to file
+        with open(file_path, "w") as f:
+            f.write(rule_text)
+
             
 if __name__ == "__main__":
 
@@ -130,11 +162,25 @@ if __name__ == "__main__":
     system=ExpertSystem(id)
     # system.add_symptom( "enceinte", "TRUE")
     system.add_symptom( "fievre", "TRUE")
-    # system.add_symptom( "enceinte_trim", "2em")
+    # system.add_symptom( "enceinte_trim", "2em")s
     # system.add_symptom( "simple", "TRUE")
     # system.add_symptom( "derniers_localisation", "AntananarivoV d")
     system.add_symptom( "domicile", "Ambatoboeny")
     system.run()
-    print(system.get_treat())
-
+    print(system.get_treat(), "\n", system.get_diag())
+    
+    
+    case={
+            "symptoms": {
+                "fievre": 'TRUE',
+                "domicile": 'Ambatoboeny'
+            },
+            "analyses": {
+                "TDR": "TRUE"
+            },
+            "patient_details": {
+                "age": 15
+            }
+         }
+    print(case["symptoms"])
     # print(list(system.env.facts()))

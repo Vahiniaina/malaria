@@ -3,7 +3,7 @@ from uuid import UUID
 from models.user_model import User
 from fastapi import HTTPException
 from models.case_model import Case
-from schemas.case_schema import CaseCreate, CaseUpdate, CaseSymptoms,CaseAnalyses
+from schemas.case_schema import CaseCreate, CasePatientDetails, CaseUpdate, CaseSymptoms,CaseAnalyses, CaseToKnowledgeBase
 from services.es_service import ExpertSystem
 
 class CaseService:
@@ -44,6 +44,15 @@ class CaseService:
 
     @staticmethod
     async def update_symptoms(current_user: User, case_id: UUID, data: CaseSymptoms):
+        case = await CaseService.retrieve_case(current_user, case_id)
+        await case.update({"$set": data.dict(exclude_unset=True)})
+        
+        await case.save()
+        return case
+
+
+    @staticmethod
+    async def update_patient_details(current_user: User, case_id: UUID, data: CasePatientDetails):
         case = await CaseService.retrieve_case(current_user, case_id)
         await case.update({"$set": data.dict(exclude_unset=True)})
         
@@ -105,50 +114,16 @@ class CaseService:
         await case.save()
         return case
 
-
-             
-
-    @staticmethod
-    async def get_suggestion(current_user: User, case_id: UUID):
-        
-        case = await CaseService.retrieve_case(current_user, case_id)
-      
-        symptoms = case.symptoms.items()
-
-        es=ExpertSystem(str(case_id))
-
-        for key, value in symptoms:
-            es.add_symptom(key, value)
-        es.run()
-        
-        data=es.get_sugg()
-
-        await case.update({"$set": data})
-        
-        await case.save()
-        return case
-
           
 
     @staticmethod
-    async def add_case_to_knowledge_base(current_user: User, case_id: UUID):
+    async def add_case_to_knowledge_base(data:CaseToKnowledgeBase, case_id: UUID, current_user: User):
         
         if(current_user.role=="simple"):
             raise HTTPException(status_code=403, detail="You are not allowed to access this resource")
 
         case = await CaseService.retrieve_case(current_user, case_id)
-      
-        symptoms = case.symptoms.items()
-
-        es=ExpertSystem(str(case_id))
-
-        for key, value in symptoms:
-            es.add_symptom(key, value)
-        es.run()
         
-        data=es.get_treat()
+        ExpertSystem.create_clp_rule(case, data)
 
-        await case.update({"$set": data})
-        
-        await case.save()
         return case

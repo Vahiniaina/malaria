@@ -8,7 +8,8 @@
    (slot age (type SYMBOL))
 ;  (slot age-cat (type SYMBOL)(allowed-symbols nourisson enfant adulte))
 ; (comment "Les zones ou le patient a ete pendant les 2 derniere semaine")
-   (multislot derniers_localisation (type SYMBOL)) 
+   ; (multislot derniers_localisation (type SYMBOL)) 
+   (slot derniers_localisation (type SYMBOL)) 
    (slot domicile (type SYMBOL))
    (slot poids (type SYMBOL))
    (slot sexe (type SYMBOL) (allowed-symbols m f ))
@@ -66,7 +67,7 @@
    (slot HRP2 (type SYMBOL) (allowed-symbols FALSE TRUE))
    (slot HRP3 (type SYMBOL) (allowed-symbols FALSE TRUE))
    (slot pLDH (type SYMBOL) (allowed-symbols FALSE TRUE))
-   (slot analyse_parasitaire (type SYMBOL) (allowed-symbols falciparum vivax malariae ovale))
+   (slot analyse_parasitaire (type SYMBOL) (allowed-symbols non_definie falciparum vivax malariae ovale))
    (slot stade_parasitaire (type SYMBOL))
 
 )
@@ -77,11 +78,12 @@
 (deftemplate diagnostique
    (slot id (type STRING))
    (slot paludisme (type SYMBOL)(allowed-symbols non_confirme confirme))
-   (slot degre (type SYMBOL) (allowed-symbols simple grave ))
-   (slot parasite (type SYMBOL) (allowed-symbols falciparum vivax malariae ovale knowlesi))
+   (slot degre (type SYMBOL) (allowed-symbols non_definie simple grave ))
+   (slot parasite (type SYMBOL) (allowed-symbols non_definie falciparum vivax malariae ovale knowlesi))
    (slot hospitalisation (type SYMBOL) (allowed-symbols FALSE TRUE))
    (slot reanimateur (type SYMBOL) (allowed-symbols FALSE TRUE))
    (slot suggestion (type STRING) )
+   (slot score (type FLOAT))
 )
 
 
@@ -98,10 +100,10 @@
 (deftemplate traitement
    (slot id (type STRING))
    (slot medicament (type STRING))
-   (slot dose (type SYMBOL) )
-   (slot duree (type INTEGER) )
-   (slot surveillance (type SYMBOL))
-   (slot effets_secondaires (type SYMBOL))
-   (slot recommandations (type SYMBOL))
+   (slot dose (type STRING) )
+   (slot duree (type STRING) )
+   (slot surveillance (type STRING))
+   (slot effets_secondaires (type STRING))
+   (slot recommandations (type STRING))
 )
 

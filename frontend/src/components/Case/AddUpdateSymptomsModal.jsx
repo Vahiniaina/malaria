@@ -1,6 +1,8 @@
 import {
   Box,
   Button,
+  Checkbox,
+  Tooltip,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -16,8 +18,10 @@ import {
   useColorModeValue,
   useDisclosure,
   useToast,
+  Text,
   Switch,
   SimpleGrid,
+  Select,
   HStack,
   RadioGroup,
   Radio
@@ -68,53 +72,6 @@ const transformSymptoms = (symptoms) => {
 };
 
 
-const SymptomsCarousel = ({ symptomsList, register }) => {
-  const [pageIndex, setPageIndex] = useState(0);
-
-  const nextPage = () => {
-    setPageIndex((prev) => (prev + 1) % symptomsList.length);
-  };
-
-  const prevPage = () => {
-    setPageIndex((prev) => (prev - 1 + symptomsList.length) % symptomsList.length);
-  };
-
-  return (
-    <FormControl width="100%" textAlign="center">
-      {/* Symptom Display Box */}
-      <Box height="120px" position="relative" display="flex" alignItems="center" justifyContent="center" overflow="hidden">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={symptomsList[pageIndex][0]} // Key = Symptom ID
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.3 }}
-            style={{ position: "absolute", width: "100%" }}
-          >
-            <Box>
-              <FormLabel htmlFor={symptomsList[pageIndex][0]} textAlign="center" fontSize="lg" color="gray.700">
-                {symptomsList[pageIndex][1]} {/* Display the Question */}
-              </FormLabel>
-              <RadioGroup id={symptomsList[pageIndex][0]}>
-                <HStack spacing={6} justify="center">
-                  <Radio value="oui" {...register(symptomsList[pageIndex][0])}>Oui</Radio>
-                  <Radio value="non" {...register(symptomsList[pageIndex][0])}>Non</Radio>
-                </HStack>
-              </RadioGroup>
-            </Box>
-          </motion.div>
-        </AnimatePresence>
-      </Box>
-
-      {/* Navigation Buttons */}
-      <HStack justify="space-between" mt={6}>
-        <Button onClick={prevPage} isDisabled={pageIndex === 0}>Précédent</Button>
-        <Button onClick={nextPage} isDisabled={pageIndex === symptomsList.length - 1}>Suivant</Button>
-      </HStack>
-    </FormControl>
-  );
-};
 
 
 export const AddUpdateSymptomsModal = ({
@@ -136,6 +93,7 @@ export const AddUpdateSymptomsModal = ({
     handleSubmit,
     register,
     formState: { isSubmitting },
+    watch
   } = useForm({
     defaultValues: { ...defaultValues },
   });
@@ -183,7 +141,17 @@ export const AddUpdateSymptomsModal = ({
             <ModalHeader textAlign="center">SYMPTOMES</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <SymptomsCarousel symptomsList={symptomsList} register={register} />
+              <SimpleGrid columns={[1, 2, 3]} spacing={4}>
+                
+                {symptomsList.map(([key, question]) => (
+                  <Box key={key}>
+                    <Tooltip label={question} hasArrow placement="top" bg="gray.700" color="white" fontSize="sm">
+                      <Text cursor="help">{key.replaceAll("_", " ")}</Text>
+                    </Tooltip>
+                    <Switch size="md" colorScheme="green" {...register(key)} />
+                  </Box>
+                ))}
+              </SimpleGrid>
             </ModalBody>
             <ModalFooter>
               <Stack direction="row" spacing={4}>

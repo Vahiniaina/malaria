@@ -60,7 +60,7 @@ class CasePatientDetails(BaseModel):
     updated_at: datetime
     
 class CaseToKnowledgeBase(BaseModel):
-    symptoms: Dict[str, Any]
-    traitement: Dict[str, Any]
-    diagnostique: Dict[str, Any]
+    # symptoms: Dict[str, Any]
+    # traitement: Dict[str, Any]
+    diagnostic: Dict[str, Any]
     

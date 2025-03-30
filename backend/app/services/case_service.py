@@ -75,10 +75,14 @@ class CaseService:
         case = await CaseService.retrieve_case(current_user, case_id)
       
         symptoms = case.symptoms.items()
+        analyses = case.analyses.items()
+        patient_details = case.patient_details.items()
 
         es=ExpertSystem(str(case_id))
 
-        for key, value in symptoms:
+        all_data = list(symptoms) + list(analyses) + list(patient_details)
+
+        for key, value in all_data:
             es.add_symptom(key, value)
         es.run()
         
@@ -99,11 +103,16 @@ class CaseService:
 
         case = await CaseService.retrieve_case(current_user, case_id)
       
+              
         symptoms = case.symptoms.items()
+        analyses = case.analyses.items()
+        patient_details = case.patient_details.items()
 
         es=ExpertSystem(str(case_id))
 
-        for key, value in symptoms:
+        all_data = list(symptoms) + list(analyses) + list(patient_details)
+
+        for key, value in all_data:
             es.add_symptom(key, value)
         es.run()
         
@@ -126,4 +135,8 @@ class CaseService:
         
         ExpertSystem.create_clp_rule(case, data)
 
+        # case = CaseService.get_diagnostic(current_user, case_id)
+        
+        # case = CaseService.get_treatment(current_user, case_id)
+        
         return case

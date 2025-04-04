@@ -12,11 +12,13 @@ import { Data } from "./components/Data/Data";
 import { Layout } from "./components/Layout/Layout";
 import { Footer } from "./components/Layout/Footer";
 import { Documentation } from "./components/Documentation/Documentation";
+import { HowTo } from "./components/Documentation/HowTo";
 import { PublicRoute } from "./components/Auth/PublicRoute";
 import { Register } from "./components/Auth/Register";
 import { NavBar } from "./components/Navbar/NavBar";
 import { CaseDetail } from "./components/Case/CaseDetail";
 import { UserDetail } from "./components/User/UserDetail";
+import { UserAdmin } from "./components/User/UserAdmin";
 import { CaseList } from "./components/Case/CaseList";
 import { AuthConsumer, AuthProvider } from "./context/JWTAuthContext";
 import { NavBarPublic } from "./components/Navbar/NavBarPublic";
@@ -53,6 +55,8 @@ function App() {
                     <Route path="data" element={<Data />} />
 
                     <Route path="documentation" element={<Documentation />} />
+
+                    <Route path="how_to" element={<HowTo />} />
                   </Route>
 
                   <Route
@@ -75,6 +79,7 @@ function App() {
                     }
                   />
 
+
                   <Route path="/" element={<NavBar />}>
                     <Route index element={<Navigate to="cases" replace />} />
                     <Route
@@ -93,13 +98,13 @@ function App() {
                             fontWeight='bold'
                             overflow="hidden"
                           >
-                            <GridItem  pl='2' bg="blackAlpha.100" color="blackAlpha.900"  overflowY="scroll" area={'nav'}>
+                            <GridItem pl='2' bg="blackAlpha.100" color="blackAlpha.900" overflowY="scroll" area={'nav'}>
                               <CaseList />
                             </GridItem>
-                            <GridItem pl='2'  bg="blackAlpha.100" placeItems="center"   overflowY="scroll" area={'main'}>
+                            <GridItem pl='2' bg="blackAlpha.100" placeItems="center" overflowY="scroll" area={'main'}>
                               <Welcome />
                             </GridItem>
-                            <GridItem pl='2'  bg="blackAlpha.100" color="blackAlpha.900" overflowY="hidden" area={'footer'}>
+                            <GridItem pl='2' bg="blackAlpha.100" color="blackAlpha.900" overflowY="hidden" area={'footer'}>
                               <Footer />
                             </GridItem>
                           </Grid>
@@ -119,13 +124,13 @@ function App() {
                             gap='1'
                             fontWeight='bold'
                           >
-                            <GridItem pl='2'  area={'nav'} overflowY="scroll">
+                            <GridItem pl='2' area={'nav'} overflowY="scroll">
                               <CaseList />
                             </GridItem>
-                            <GridItem pl='2'  area={'main'} overflowY="scroll">
+                            <GridItem pl='2' area={'main'} overflowY="scroll">
                               <CaseDetail />
                             </GridItem>
-                            <GridItem pl='2'  bg="blackAlpha.100" color="blackAlpha.900" overflowY="hidden" area={'footer'}>
+                            <GridItem pl='2' bg="blackAlpha.100" color="blackAlpha.900" overflowY="hidden" area={'footer'}>
                               <Footer />
                             </GridItem>
                           </Grid>
@@ -137,6 +142,15 @@ function App() {
                       element={
                         <Authenticated>
                           <UserDetail />
+                        </Authenticated>
+                      }
+                    />
+
+                    <Route
+                      path="administration"
+                      element={
+                        <Authenticated>
+                          <UserAdmin />
                         </Authenticated>
                       }
                     />

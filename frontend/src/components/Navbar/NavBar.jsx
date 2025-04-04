@@ -6,13 +6,38 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
+import axiosInstance from "../../services/axios";
 import { useAuth } from "../../hooks/useAuth";
 import { ThemeToggler } from "../Theme/ThemeToggler";
 
 export const NavBar = () => {
+  const bgColor = useColorModeValue("blackAlpha.100", "whiteAlpha.200");
+  const textColor = useColorModeValue("blackAlpha.900", "whiteAlpha.700");
+  const hoverBgColor = useColorModeValue("blackAlpha.200", "whiteAlpha.150");
+
+
+  const [user, setUser] = useState({});
+
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const { user_id } = useParams();
+
+  useEffect(() => {
+    fetchUser();
+  }, [user_id]);
+
+  const fetchUser = () => {
+    axiosInstance
+      .get(`/users/me`)
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+      });
+  };
 
   return (
     <>
@@ -30,6 +55,7 @@ export const NavBar = () => {
           zIndex={10}
         >
           <Text
+            color={{base: "red", lg:"blue", md:"green"}}
             as="h2"
             fontSize={24}
             fontWeight="bold"
@@ -67,6 +93,17 @@ export const NavBar = () => {
             >
               Home
             </Button>
+
+            {user.role === "admin" && (
+              <Button
+                onClick={() => navigate(`/administration`, { replace: true })}
+                bg={bgColor}
+                color={textColor}
+                _hover={{ bg: hoverBgColor }}
+              >
+                Admministration
+              </Button>
+            )}
 
             <Button
               onClick={logout}

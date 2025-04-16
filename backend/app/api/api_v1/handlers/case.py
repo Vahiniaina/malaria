@@ -15,6 +15,11 @@ async def list(current_user: User = Depends(get_current_user)):
     return await CaseService.list_cases(current_user)
 
 
+@case_router.get('/get_statistic_data', summary="get statistic data", response_model=List[CaseOut])
+async def update( current_user: User = Depends(get_current_user)):
+    return await CaseService.get_statistic_data(current_user)
+
+
 @case_router.post('/create', summary="Create Case", response_model=Case)
 async def create_case(data: CaseCreate, current_user: User = Depends(get_current_user)):
     return await CaseService.create_case(current_user, data)

@@ -22,6 +22,7 @@ class CaseService:
         case = await Case.find_one(Case.case_id == case_id, Case.owner.id == current_user.id)
         return case
     
+    
     @staticmethod
     async def update_case(current_user: User, case_id: UUID, data: CaseUpdate):
         case = await CaseService.retrieve_case(current_user, case_id)
@@ -140,3 +141,13 @@ class CaseService:
         # case = CaseService.get_treatment(current_user, case_id)
         
         return case
+    
+    
+    
+    @staticmethod
+    async def get_statistic_data(current_user: User) -> List[Case]:
+        if(current_user.role =="simple"):
+            raise HTTPException(status_code=403, detail="You are not allowed to access this resource")
+
+        cases = await Case.find().to_list(length=None)
+        return cases

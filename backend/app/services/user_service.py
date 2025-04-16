@@ -4,6 +4,8 @@ from schemas.user_schema import UserAuth
 from models.user_model import User
 from core.security import get_password, verify_password
 import pymongo
+from fastapi import HTTPException
+from typing import List
 
 from schemas.user_schema import UserUpdate
 
@@ -49,3 +51,13 @@ class UserService:
     
         await user.update({"$set": data.dict(exclude_unset=True)})
         return user
+        
+    @staticmethod
+    async def get_all_user(current_user: User) -> List[User]:
+        
+        if(current_user.role!="Admin"):
+            raise HTTPException(status_code=403, detail="You are not allowed to access this resource")
+
+        users = await User.find().to_list(length=None)
+        
+        return users

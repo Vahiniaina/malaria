@@ -1,8 +1,12 @@
-import {  IconButton, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { IconButton, useColorMode, Text, useColorModeValue } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 export const ThemeToggler = ({ showLabel = false, ...rest }) => {
   const { toggleColorMode, colorMode } = useColorMode();
+
+  const bgColor = useColorModeValue("whiteAlpha 900", "blackAlpha 50");
+  const textColor = useColorModeValue("blackAlpha.700", "whiteAlpha.700");
+  const hoverTextColor = useColorModeValue("blackAlpha.900", "whiteAlpha 300");
 
   return (
     <>
@@ -11,12 +15,24 @@ export const ThemeToggler = ({ showLabel = false, ...rest }) => {
         size="sm"
         icon={colorMode === "dark" ? <SunIcon size="sm" /> : <MoonIcon size="sm" />}
         aria-label="Toggle theme"
-        bg={useColorModeValue("blackAlpha.100", "whiteAlpha.200")}
-        color={useColorModeValue("blackAlpha.900", "whiteAlpha.700")}
-        _hover={{ bg: useColorModeValue("blackAlpha.200", "whiteAlpha.150") }}
+        bg={bgColor}
+        color={textColor}
+        _hover={{ color: hoverTextColor }}
         onClick={toggleColorMode}
         {...rest}
+
       />
+      {showLabel && (
+        <Text
+          fontSize="sm"
+          onClick={toggleColorMode}
+          bg={bgColor}
+          color={textColor}
+          _hover={{ color: hoverTextColor }}
+        >
+          {colorMode === "dark" ? "Light mode" : "Dark mode"}
+        </Text>
+      )}
     </>
   );
 };

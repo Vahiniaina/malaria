@@ -55,7 +55,7 @@ export const AddUpdateCaseModal = ({
       if (editable) {
         await axiosInstance.put(`/case/${case_id}`, formattedValues);
       } else {
-        await axiosInstance.post(`/case/create/`, formattedValues).then((response) => navigate(`/case/${response.data.case_id}`, { replace: true }));
+        await axiosInstance.post(`/case/create/`, formattedValues).then((response) => navigate(`/cases/${response.data.case_id}`, { replace: true }));
       }
       toast({
         title: editable ? "Case Updated" : "Case Added",

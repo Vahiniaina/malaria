@@ -22,7 +22,6 @@ export const CaseDetail = () => {
   const [user, setUser] = useState({});
   const [cas, setCase] = useState({});
   const [loading, setLoading] = useState(true);
-  const isMounted = useRef(false);
   const { case_id } = useParams();
   // const { user_id } = useParams();
   const navigate = useNavigate();
@@ -43,11 +42,9 @@ export const CaseDetail = () => {
   };
 
   useEffect(() => {
-    if (isMounted.current) return;
     fetchCase();
     fetchUser();
     console.log("user effct", user, cas.diagnostic)
-    isMounted.current = true;
   }, [case_id]);
 
   const fetchUser = () => {

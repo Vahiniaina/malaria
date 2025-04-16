@@ -1,62 +1,203 @@
+import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
   Flex,
   Stack,
-  Text,
   useColorModeValue,
+  useDisclosure,
+  IconButton,
+  HStack,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+
+import { MdHome, MdDataset, MdWork } from "react-icons/md";
+
+import {  useNavigate, useLocation } from "react-router-dom";
 import { ThemeToggler } from "../Theme/ThemeToggler";
 
 export const NavBarPublic = () => {
+
+  const location= useLocation()
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const bgColor = useColorModeValue("whiteAlpha 900", "blackAlpha 50");
+  const textColor = useColorModeValue("blackAlpha.700", "whiteAlpha.700");
+  const hoverTextColor = useColorModeValue("blackAlpha.900", "whiteAlpha 300");
+
+
   const navigate = useNavigate();
+
   return (
     <>
-      <Box>
+      <Box
+        bg={bgColor} // Softer dark mode navbar
+        color={textColor} // Softer text color
+        border="1px solid"
+        borderColor="gray.300"
+        position={'relative'}
+      >
         <Flex
-          as="nav"
-          align="center"
-          h="10vh"
-          justify="space-between"
-          wrap="wrap"
-          padding="1rem"
-          bg={useColorModeValue("blackAlpha.100", "whiteAlpha.200")} // Softer dark mode navbar
-          color={useColorModeValue("blackAlpha.900", "whiteAlpha.700")} // Softer text color
-          position={"fixed"}
-          width={"100%"}
+          px={4}
+          minH="10vh"
           zIndex={100}
+          // alignItems={'center'}
+          justifyContent={'space-between'}
         >
-          <Text as="h2"  fontSize={24} fontWeight="bold" onClick={() => navigate(`/home`, { replace: true })} >
+          <Flex display={{ md: "none" }} flex={{ base: 0 }}>
+
+            <IconButton
+              size={'md'}
+              mt={"2vh"}
+              mb={'2vh'}
+              icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+              aria-label={'Open Menu'}
+              // display={{ md: 'none' }}
+              onClick={isOpen ? onClose : onOpen}
+            />
+
+          </Flex>
+
+          <Flex
+            as="h2"
+            fontSize={24}
+            justify="center"
+            fontWeight="bold"
+            mt={'2vh'}
+            flex={{ base: 1, md: "unset" }}
+            // position={{base: "center", md: "unset"}}
+            onClick={() => navigate(`/home`, { replace: true })}
+          >
             MalarIA
-          </Text>
-          <Stack direction="row" align="center" spacing={4}>
-            <ThemeToggler size="md" />
+          </Flex>
+          
+          <Flex flex={{ base: 0, md: "1" }} ml="2vh" mt={'2vh'} mb={{ base: "auto", md: '2vh' }} justify="center">
 
-            <Button onClick={() => navigate(`/home/data`, { replace: true })}
-              bg={useColorModeValue("blackAlpha.100", "whiteAlpha.200")}
-              color={useColorModeValue("blackAlpha.900", "whiteAlpha.700")}
-              _hover={{ bg: useColorModeValue("blackAlpha.200", "whiteAlpha.150") }}>
-              Data
-            </Button>
+            <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
+              <Button
+                onClick={() => navigate(`/home`, { replace: true })}
+                variant="ghost"
+                fontWeight={(location.pathname === '/home') ? "bold" : "normal"}
+                borderBottom={(location.pathname === '/home') ? "2px solid" : "2px solid transparent"}
+                borderColor={(location.pathname === '/home') ? textColor : "transparent"}
+                bg="transparent"
+                borderRadius="0"
+                color="inherit"
+                _hover={{ color: hoverTextColor }}
+                leftIcon={<MdHome />}
+              >
+                Home
+              </Button>
 
-            <Button onClick={() => navigate(`/home/documentation`, { replace: true })}
-              bg={useColorModeValue("blackAlpha.100", "whiteAlpha.200")}
-              color={useColorModeValue("blackAlpha.900", "whiteAlpha.700")}
-              _hover={{ bg: useColorModeValue("blackAlpha.200", "whiteAlpha.150") }}>
-              Documentaion
-            </Button>
+              <Button onClick={() => navigate(`/home/data`, { replace: true })}
+                variant="ghost"
+                fontWeight={(location.pathname === '/home/data') ? "bold" : "normal"}
+                borderBottom={(location.pathname === '/home/data') ? "2px solid" : "2px solid transparent"}
+                borderColor={(location.pathname === '/home/data') ? textColor : "transparent"}
+                bg="transparent"
+                borderRadius="0"
+                color="inherit"
+                _hover={{ color: hoverTextColor }}
+                leftIcon={<MdDataset />}
+              >
+                Data
+              </Button>
 
-            <Button onClick={() => navigate(`/`, { replace: true })}
-              bg={useColorModeValue("blackAlpha.100", "whiteAlpha.200")}
-              color={useColorModeValue("blackAlpha.900", "whiteAlpha.700")}
-              _hover={{ bg: useColorModeValue("blackAlpha.200", "whiteAlpha.150") }}>
-              Expert System
-            </Button>
+              <Button onClick={() => navigate(`/home/documentation`, { replace: true })}
 
-          </Stack>
+                variant="ghost"
+                fontWeight={(location.pathname === '/home/documentation') ? "bold" : "normal"}
+                borderBottom={(location.pathname === '/home/documentation') ? "2px solid" : "2px solid transparent"}
+                borderColor={(location.pathname === '/home/documentation') ? textColor : "transparent"}
+                bg="transparent"
+                borderRadius="0"
+                color="inherit"
+                _hover={{ color: hoverTextColor }}
+                leftIcon={<MdDataset />}
+              >
+                Documentaion
+              </Button>
+
+              <Button onClick={() => navigate(`/`, { replace: true })}
+                variant="ghost"
+                bg="transparent"
+                color="inherit"
+                _hover={{ color: hoverTextColor }}
+                leftIcon={<MdWork />}
+              >
+                Expert System
+              </Button>
+            </HStack>
+
+          </Flex>
+
+          <Flex mr="2vh" mt={'2vh'} mb={'2vh'} align="flex-start" flexShrink={0} flexGrow={0} width="auto" height="auto">
+            <ThemeToggler m={"1vh"} size="md" showLabel={false} />
+          </Flex>
         </Flex>
-      </Box>
+
+        {isOpen ? (
+          <Flex pb={4} mt={4} direction="column" flex={{ base: 0 }}>
+            <Stack as={'nav'} spacing={4} >
+              <Button
+                onClick={() => navigate(`/home`, { replace: true })}
+                variant="ghost"
+                fontWeight={(location.pathname === '/home') ? "bold" : "normal"}
+                borderBottom={(location.pathname === '/home') ? "2px solid" : "2px solid transparent"}
+                borderColor={(location.pathname === '/home') ? textColor : "transparent"}
+                bg="transparent"
+                borderRadius="0"
+                color="inherit"
+                _hover={{ color: hoverTextColor }}
+                leftIcon={<MdHome />}
+              >
+                Home
+              </Button>
+
+              <Button onClick={() => navigate(`/home/data`, { replace: true })}
+                variant="ghost"
+                fontWeight={(location.pathname === '/home/data') ? "bold" : "normal"}
+                borderBottom={(location.pathname === '/home/data') ? "2px solid" : "2px solid transparent"}
+                borderColor={(location.pathname === '/home/data') ? textColor : "transparent"}
+                bg="transparent"
+                borderRadius="0"
+                color="inherit"
+                _hover={{ color: hoverTextColor }}
+                leftIcon={<MdDataset />}
+              >
+                Data
+              </Button>
+
+              <Button onClick={() => navigate(`/home/documentation`, { replace: true })}
+
+                variant="ghost"
+                fontWeight={(location.pathname === '/home/documentation') ? "bold" : "normal"}
+                borderBottom={(location.pathname === '/home/documentation') ? "2px solid" : "2px solid transparent"}
+                borderColor={(location.pathname === '/home/documentation') ? textColor : "transparent"}
+                bg="transparent"
+                borderRadius="0"
+                color="inherit"
+                _hover={{ color: hoverTextColor }}
+                leftIcon={<MdDataset />}
+              >
+                Documentaion
+              </Button>
+
+              <Button onClick={() => navigate(`/`, { replace: true })}
+                variant="ghost"
+                bg="transparent"
+                color="inherit"
+                _hover={{ color: hoverTextColor }}
+                leftIcon={<MdWork />}
+              >
+                Expert System
+              </Button>
+            </Stack>
+
+          </Flex>
+        ) : null}
+      </Box >
+
     </>
   );
 };

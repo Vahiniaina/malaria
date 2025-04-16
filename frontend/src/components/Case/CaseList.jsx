@@ -1,7 +1,7 @@
 import { Box, Center, Spinner, useColorModeValue } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import axiosInstance from "../../services/axios";
-import { AddUpdateCaseModal } from "./AddUpdateCaseModal";
+// import { AddUpdateCaseModal } from "./AddUpdateCaseModal";
 import { CaseCard } from "./CaseCard";
 
 export const CaseList = () => {
@@ -39,7 +39,6 @@ export const CaseList = () => {
       bg={useColorModeValue("blackAlpha.100", "whiteAlpha.200")} // Softer dark mode navbar
       color={useColorModeValue("blackAlpha.900", "whiteAlpha.700")}
     >
-      <AddUpdateCaseModal onSuccess={fetchCases} />
       {loading ? (
         <Center mt={6}>
           <Spinner

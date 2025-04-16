@@ -1,4 +1,20 @@
 import { Flex, Spinner } from "@chakra-ui/react";
+
+import {
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Button,
+  useDisclosure,
+  Box
+} from "@chakra-ui/react";
+import { useRef } from "react";
+
+
 import {
   BrowserRouter as Router,
   Navigate,
@@ -17,15 +33,21 @@ import { PublicRoute } from "./components/Auth/PublicRoute";
 import { Register } from "./components/Auth/Register";
 import { NavBar } from "./components/Navbar/NavBar";
 import { CaseDetail } from "./components/Case/CaseDetail";
+import { CaseStatistics } from "./components/Case/CaseStatistics";
 import { UserDetail } from "./components/User/UserDetail";
 import { UserAdmin } from "./components/User/UserAdmin";
 import { CaseList } from "./components/Case/CaseList";
 import { AuthConsumer, AuthProvider } from "./context/JWTAuthContext";
 import { NavBarPublic } from "./components/Navbar/NavBarPublic";
 import { Welcome } from "./components/Case/Welcome";
-import { Grid, GridItem } from '@chakra-ui/react'
+import { AddUpdateCaseModal } from "./components/Case/AddUpdateCaseModal";
 
 function App() {
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const btnRef = useRef();
+
   return (
     <>
       <AuthProvider>
@@ -86,28 +108,73 @@ function App() {
                       path="cases"
                       element={
                         <Authenticated>
-                          <Grid
-                            templateAreas={`"nav main" 
-                                            "footer main" 
-                                          `}
-                            gridTemplateRows={'80vh 10vh '}
-                            gridTemplateColumns={'30vw 1fr'}
-                            h="90vh"
-                            w="100vw"
-                            gap='1'
-                            fontWeight='bold'
-                            overflow="hidden"
-                          >
-                            <GridItem pl='2' bg="blackAlpha.100" color="blackAlpha.900" overflowY="scroll" area={'nav'}>
-                              <CaseList />
-                            </GridItem>
-                            <GridItem pl='2' bg="blackAlpha.100" placeItems="center" overflowY="scroll" area={'main'}>
+                          <Flex direction={{ base: "column", md: "row" }} h="90vh" w="100vw">
+                            {/* Mobile: Bouton et Drawer visible en base seulement */}
+                            <Box display={{ base: "block", md: "none" }} p={4}>
+                              <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
+                                Open Case List
+                              </Button>
+
+                              <Drawer
+                                closeOnInteractOutside={false}
+                                isOpen={isOpen}
+                                placement='left'
+                                onClose={onClose}
+                                finalFocusRef={btnRef}
+                                size="md" // ~30vw
+                              >
+                                <DrawerOverlay />
+                                <DrawerContent>
+                                  <DrawerCloseButton />
+                                  <DrawerHeader>
+                                    <AddUpdateCaseModal />
+                                  </DrawerHeader>
+
+                                  <DrawerBody overflowY="scroll">
+                                    <CaseList />
+                                  </DrawerBody>
+
+                                  <DrawerFooter>
+                                    <Footer />
+                                  </DrawerFooter>
+                                </DrawerContent>
+                              </Drawer>
+                            </Box>
+
+                            {/* Sidebar visible en md+ */}
+                            <Flex
+                              direction="column"
+                              w={{ md: "30vw" }}
+                              display={{ base: "none", md: "flex" }}
+                              bg="gray.50"
+                              h="100%"
+                            >
+                              <Box>
+                                <AddUpdateCaseModal />
+                              </Box>
+                              <Box flex="1" overflowY="scroll" p={2}>
+                                <CaseList />
+                              </Box>
+                              <Box
+                                bg="blackAlpha.100"
+                                color="blackAlpha.900"
+                                p={2}
+                                overflowY="hidden"
+                              >
+                                <Footer />
+                              </Box>
+                            </Flex>
+
+                            {/* Main content: Welcome */}
+                            <Box
+                              flex="1"
+                              overflowY="scroll"
+                              p={4}
+                            >
                               <Welcome />
-                            </GridItem>
-                            <GridItem pl='2' bg="blackAlpha.100" color="blackAlpha.900" overflowY="hidden" area={'footer'}>
-                              <Footer />
-                            </GridItem>
-                          </Grid>
+                            </Box>
+                          </Flex>
+
                         </Authenticated>
                       }
                     />
@@ -115,33 +182,100 @@ function App() {
                       path="cases/:case_id"
                       element={
                         <Authenticated>
-                          <Grid
-                            templateAreas={`"nav main""footer main"`}
-                            gridTemplateRows={'80vh 1fr '}
-                            gridTemplateColumns={'30vw 1fr'}
-                            h="90vh"
-                            w="100vw"
-                            gap='1'
-                            fontWeight='bold'
-                          >
-                            <GridItem pl='2' area={'nav'} overflowY="scroll">
-                              <CaseList />
-                            </GridItem>
-                            <GridItem pl='2' area={'main'} overflowY="scroll">
+                          <Flex direction={{ base: "column", md: "row" }} h="90vh" w="100vw">
+                            {/* SIDEBAR: CaseList + Footer (visible md+) */}
+
+                            <Box display={{ md: "none" }}>
+                              <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
+                                Open Case List
+                              </Button>
+
+                              <Drawer closeOnInteractOutside={false}
+                                isOpen={isOpen}
+                                placement='left'
+                                onClose={onClose}
+                                finalFocusRef={btnRef}
+                                size="md" // equivalent to ~30vw
+                              >
+                                <DrawerOverlay />
+                                <DrawerContent>
+                                  <DrawerCloseButton />
+                                  <DrawerHeader>
+                                    <AddUpdateCaseModal />
+                                  </DrawerHeader>
+
+                                  <DrawerBody overflowY="scroll">
+                                    <CaseList />
+                                  </DrawerBody>
+
+                                  <DrawerFooter>
+                                    <Footer />
+                                  </DrawerFooter>
+                                </DrawerContent>
+                              </Drawer>
+                            </Box>
+                            <Flex
+                              display={{ base: "none", md: "flex" }}
+                              direction="column"
+                              w={{ md: "30vw" }}
+                              h="100%"
+                              bg="gray.50"
+                            >
+                              <Box>
+                                <AddUpdateCaseModal />
+                              </Box>
+                              {/* CaseList en haut */}
+                              <Box flex="1" overflowY="scroll" p={2}>
+                                <CaseList />
+                              </Box>
+
+                              {/* Footer en bas */}
+                              <Box
+                                bg="blackAlpha.100"
+                                color="blackAlpha.900"
+                                p={2}
+                                overflowY="hidden"
+                              >
+                                <Footer />
+                              </Box>
+                            </Flex>
+
+                            {/* MAIN CONTENT: CaseDetail (visible always) */}
+                            <Box
+                              flex="1"
+                              overflowY="scroll"
+                              p={2}
+                            >
                               <CaseDetail />
-                            </GridItem>
-                            <GridItem pl='2' bg="blackAlpha.100" color="blackAlpha.900" overflowY="hidden" area={'footer'}>
-                              <Footer />
-                            </GridItem>
-                          </Grid>
+                            </Box>
+                          </Flex>
+
                         </Authenticated>
                       }
                     />
+                    <Route
+                      path="user_or"
+                      element={
+                        <Authenticated>
+                          <UserDetail />
+                        </Authenticated>
+                      }
+                    />
+
                     <Route
                       path="user"
                       element={
                         <Authenticated>
                           <UserDetail />
+                        </Authenticated>
+                      }
+                    />
+
+                    <Route
+                      path="statistics"
+                      element={
+                        <Authenticated>
+                          <CaseStatistics />
                         </Authenticated>
                       }
                     />

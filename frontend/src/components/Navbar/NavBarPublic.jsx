@@ -86,7 +86,7 @@ export const NavBarPublic = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdHome />}
               >
-                Home
+                Acceuil
               </Button>
 
               <Button onClick={() => navigate(`/home/data`, { replace: true })}
@@ -100,7 +100,7 @@ export const NavBarPublic = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdDataset />}
               >
-                Data
+                Données
               </Button>
 
               <Button onClick={() => navigate(`/home/documentation`, { replace: true })}
@@ -125,7 +125,7 @@ export const NavBarPublic = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdWork />}
               >
-                Expert System
+                Système Expert
               </Button>
             </HStack>
 
@@ -151,7 +151,7 @@ export const NavBarPublic = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdHome />}
               >
-                Home
+                Acceuil
               </Button>
 
               <Button onClick={() => navigate(`/home/data`, { replace: true })}
@@ -165,7 +165,7 @@ export const NavBarPublic = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdDataset />}
               >
-                Data
+                Données
               </Button>
 
               <Button onClick={() => navigate(`/home/documentation`, { replace: true })}
@@ -190,7 +190,7 @@ export const NavBarPublic = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdWork />}
               >
-                Expert System
+                Système Expert
               </Button>
             </Stack>
 

@@ -69,7 +69,7 @@ export const CaseStatistics = () => {
 
     const severityData = countByKey(data, "diagnostic", "Severite");
     const locationData = countByKey(data, "symptoms", "domicile");
-    
+
     const parasiteData = countByKey(data, "diagnostic", "parasite");
 
     const symptomCounts = {};
@@ -111,17 +111,17 @@ export const CaseStatistics = () => {
                 </Center>
             ) : (
                 <>
-                    {/* KPIs */}
+                    {/* Indicateurs Clés (KPIs) */}
                     <Center mb={10}>
                         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
                             <Stat textAlign="center">
-                                <StatLabel fontSize="lg">Active Cases</StatLabel>
+                                <StatLabel fontSize="lg">Cas Actifs</StatLabel>
                                 <StatNumber color="green.600" fontSize="3xl">
                                     {totalActive}
                                 </StatNumber>
                             </Stat>
                             <Stat textAlign="center">
-                                <StatLabel fontSize="lg">Healed Cases</StatLabel>
+                                <StatLabel fontSize="lg">Cas Guéris</StatLabel>
                                 <StatNumber color="blue.500" fontSize="3xl">
                                     {totalHealed}
                                 </StatNumber>
@@ -129,19 +129,20 @@ export const CaseStatistics = () => {
                         </SimpleGrid>
                     </Center>
 
-                    {/* Charts */}
+                    {/* Graphiques */}
                     <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-                        {/* Location */}
+
+                        {/* Localisation */}
                         <Box {...chartBoxStyle}>
                             <Text fontSize="xl" mb={4} fontWeight="semibold">
-                                📍 Location of Cases
+                                📍 Localisation des Cas
                             </Text>
                             <Bar
                                 data={{
                                     labels: Object.keys(locationData),
                                     datasets: [
                                         {
-                                            label: "Cases",
+                                            label: "Nombre de cas",
                                             data: Object.values(locationData),
                                             backgroundColor: "#4299E1",
                                         },
@@ -150,10 +151,10 @@ export const CaseStatistics = () => {
                             />
                         </Box>
 
-                        {/* Symptoms */}
+                        {/* Symptômes */}
                         <Box {...chartBoxStyle}>
                             <Text fontSize="xl" mb={4} fontWeight="semibold">
-                                🩺 Common Symptoms
+                                🩺 Symptômes Fréquents
                             </Text>
                             <Bar
                                 data={{
@@ -169,10 +170,10 @@ export const CaseStatistics = () => {
                             />
                         </Box>
 
-                        {/* Severity */}
+                        {/* Gravité */}
                         <Box {...chartBoxStyle}>
                             <Text fontSize="xl" mb={4} fontWeight="semibold">
-                                📊 Case Severity
+                                📊 Gravité des Cas
                             </Text>
                             <Pie
                                 data={{
@@ -187,10 +188,10 @@ export const CaseStatistics = () => {
                             />
                         </Box>
 
-                        {/* Parasite Distribution */}
+                        {/* Distribution des Parasites */}
                         <Box {...chartBoxStyle}>
                             <Text fontSize="xl" mb={4} fontWeight="semibold">
-                                🧬 Parasite Distribution
+                                🧬 Distribution des Parasites
                             </Text>
                             <Pie
                                 data={{
@@ -205,6 +206,7 @@ export const CaseStatistics = () => {
                             />
                         </Box>
                     </SimpleGrid>
+
                 </>
             )}
         </Box>

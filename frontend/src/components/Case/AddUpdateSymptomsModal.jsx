@@ -75,47 +75,40 @@ const transformSymptoms = (symptoms) => {
 
 
 export const AddUpdateSymptomsModal = ({
-
-
   editable = false,
   defaultValues = {},
-  onSuccess = () => { },
+  onSuccess = () => {},
   ...rest
 }) => {
-
-
-
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const { case_id } = useParams();
+
   const {
     handleSubmit,
     register,
     formState: { isSubmitting },
-    watch
+    watch,
   } = useForm({
     defaultValues: { ...defaultValues },
   });
 
   const onSubmit = async (values) => {
-    console.log("values:", values)
-    values = transformSymptoms(values)
-    console.log("values 2:", values)
+    values = transformSymptoms(values);
     const formattedValues = {
       ...values,
-      updated_at: new Date().toISOString()// Create mode: add both created_at and updated_at
+      updated_at: new Date().toISOString(),
     };
     try {
       await axiosInstance.put(`/case/update_symptoms/${case_id}`, formattedValues);
-
       onSuccess();
       onClose();
     } catch (err) {
-      console.log("error on submit")
+      console.log("Erreur lors de la soumission");
       console.error(err.response?.data);
       toast({
-        title: "Something went wrong. Please try again.",
+        title: "Une erreur est survenue. Veuillez réessayer.",
         status: "error",
         isClosable: true,
         duration: 1500,
@@ -126,7 +119,7 @@ export const AddUpdateSymptomsModal = ({
   return (
     <Box {...rest}>
       <Button w="100%" colorScheme="green" onClick={onOpen}>
-        ADD SYMPTOM
+        AJOUTER DES SYMPTÔMES
       </Button>
       <Modal
         closeOnOverlayClick={false}
@@ -138,14 +131,20 @@ export const AddUpdateSymptomsModal = ({
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalContent>
-            <ModalHeader textAlign="center">SYMPTOMES</ModalHeader>
+            <ModalHeader textAlign="center">SYMPTÔMES</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <SimpleGrid columns={[1, 2, 3]} spacing={4}>
-                
                 {symptomsList.map(([key, question]) => (
                   <Box key={key}>
-                    <Tooltip label={question} hasArrow placement="top" bg="gray.700" color="white" fontSize="sm">
+                    <Tooltip
+                      label={question}
+                      hasArrow
+                      placement="top"
+                      bg="gray.700"
+                      color="white"
+                      fontSize="sm"
+                    >
                       <Text cursor="help">{key.replaceAll("_", " ")}</Text>
                     </Tooltip>
                     <Switch size="md" colorScheme="green" {...register(key)} />
@@ -156,15 +155,15 @@ export const AddUpdateSymptomsModal = ({
             <ModalFooter>
               <Stack direction="row" spacing={4}>
                 <Button onClick={onClose} disabled={isSubmitting}>
-                  Close
+                  Fermer
                 </Button>
                 <Button
                   colorScheme="green"
                   type="submit"
                   isLoading={isSubmitting}
-                  loadingText={"Updating"}
+                  loadingText={"Mise à jour..."}
                 >
-                  UPDATE
+                  Mettre à jour
                 </Button>
               </Stack>
             </ModalFooter>

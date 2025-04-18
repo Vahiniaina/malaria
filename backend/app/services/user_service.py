@@ -53,11 +53,11 @@ class UserService:
         return user
         
     @staticmethod
-    async def get_all_user(current_user: User) -> List[User]:
+    async def get_all_user(current_user) -> List[User]:
         
         if(current_user.role!="Admin"):
             raise HTTPException(status_code=403, detail="You are not allowed to access this resource")
-
-        users = await User.find().to_list(length=None)
-        
+      
+        users= await User.find_all().to_list()  
+         
         return users

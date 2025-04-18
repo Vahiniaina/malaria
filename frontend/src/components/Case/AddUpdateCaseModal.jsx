@@ -33,6 +33,7 @@ export const AddUpdateCaseModal = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const { case_id } = useParams();
+
   const {
     handleSubmit,
     register,
@@ -43,22 +44,22 @@ export const AddUpdateCaseModal = ({
   });
 
   const onSubmit = async (values) => {
-    console.log(values)
     const formattedValues = {
       ...values,
       ...(editable
-        ? { updated_at: new Date().toISOString() } // Update mode: only add updated_at
-        : { created_at: new Date().toISOString() } // Create mode: add both created_at and updated_at
-      ),
+        ? { updated_at: new Date().toISOString() }
+        : { created_at: new Date().toISOString() }),
     };
     try {
       if (editable) {
         await axiosInstance.put(`/case/${case_id}`, formattedValues);
       } else {
-        await axiosInstance.post(`/case/create/`, formattedValues).then((response) => navigate(`/cases/${response.data.case_id}`, { replace: true }));
+        await axiosInstance.post(`/case/create/`, formattedValues).then((response) =>
+          navigate(`/cases/${response.data.case_id}`, { replace: true })
+        );
       }
       toast({
-        title: editable ? "Case Updated" : "Case Added",
+        title: editable ? "Consultation mis à jour" : "Nouveau Consultation ajouté",
         status: "success",
         isClosable: true,
         duration: 1500,
@@ -66,10 +67,10 @@ export const AddUpdateCaseModal = ({
       onSuccess();
       onClose();
     } catch (err) {
-      console.log("error on submit")
+      console.log("Erreur lors de la soumission");
       console.error(err.response?.data);
       toast({
-        title: "Something went wrong. Please try again.",
+        title: "Une erreur est survenue. Veuillez réessayer.",
         status: "error",
         isClosable: true,
         duration: 1500,
@@ -78,11 +79,14 @@ export const AddUpdateCaseModal = ({
   };
 
   return (
-    <Box {...rest} >
-      <Button w="100%" 
-              px={10}
-              bg={useColorModeValue("blackAlpha.400", "whiteAlpha.200")} onClick={onOpen}>
-        {editable ? "UPDATE CASE" : "ADD NEW CASE"}
+    <Box {...rest}>
+      <Button
+        w="100%"
+        px={10}
+        bg={useColorModeValue("blackAlpha.400", "whiteAlpha.200")}
+        onClick={onOpen}
+      >
+        {editable ? "MODIFIER LA CONSULATION" : "CREER UN NOUVEAU CONSULTATION"}
       </Button>
       <Modal
         closeOnOverlayClick={false}
@@ -94,27 +98,28 @@ export const AddUpdateCaseModal = ({
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalContent>
-            <ModalHeader>{editable ? "Update Case" : "ADD NEW CASE"}</ModalHeader>
+            <ModalHeader>
+              {editable ? "Modifier la consulation" : "Creer un nouveau consuttalion"}
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-
               <FormControl isInvalid={errors.title}>
                 <Input
-                  placeholder="Case Title...."
+                  placeholder="Titre du Consultation..."
                   background={useColorModeValue("gray.300", "gray.600")}
                   type="text"
                   variant="filled"
                   size="lg"
                   mt={6}
                   {...register("title", {
-                    required: "This is required field",
+                    required: "Ce champ est requis",
                     minLength: {
                       value: 5,
-                      message: "Title must be at least 5 characters",
+                      message: "Le titre doit contenir au moins 5 caractères",
                     },
                     maxLength: {
                       value: 55,
-                      message: "Title must be at most 55 characters",
+                      message: "Le titre doit contenir au maximum 55 caractères",
                     },
                   })}
                 />
@@ -126,21 +131,21 @@ export const AddUpdateCaseModal = ({
               <FormControl isInvalid={errors.description}>
                 <Textarea
                   rows={5}
-                  placeholder="Add description...."
+                  placeholder="Ajouter une description..."
                   background={useColorModeValue("gray.300", "gray.600")}
                   type="text"
                   variant="filled"
                   size="lg"
                   mt={6}
                   {...register("description", {
-                    required: "This is required field",
+                    required: "Ce champ est requis",
                     minLength: {
                       value: 5,
-                      message: "Description must be at least 5 characters",
+                      message: "La description doit contenir au moins 5 caractères",
                     },
                     maxLength: {
                       value: 200,
-                      message: "Description must be at most 200 characters",
+                      message: "La description doit contenir au maximum 200 caractères",
                     },
                   })}
                 />
@@ -149,24 +154,23 @@ export const AddUpdateCaseModal = ({
                 </FormErrorMessage>
               </FormControl>
 
-              
               <FormControl isInvalid={errors.patient_name}>
                 <Input
-                  placeholder="Case patient_name...."
+                  placeholder="Nom du patient..."
                   background={useColorModeValue("gray.300", "gray.600")}
                   type="text"
                   variant="filled"
                   size="lg"
                   mt={6}
                   {...register("patient_name", {
-                    required: "This is required field",
+                    required: "Ce champ est requis",
                     minLength: {
                       value: 5,
-                      message: "Patient_name must be at least 5 characters",
+                      message: "Le nom du patient doit contenir au moins 5 caractères",
                     },
                     maxLength: {
                       value: 55,
-                      message: "Patient_name must be at most 55 characters",
+                      message: "Le nom du patient doit contenir au maximum 55 caractères",
                     },
                   })}
                 />
@@ -174,13 +178,13 @@ export const AddUpdateCaseModal = ({
                   {errors.patient_name && errors.patient_name.message}
                 </FormErrorMessage>
               </FormControl>
-              
+
               <Controller
                 control={control}
                 name="status"
                 render={({ field }) => (
                   <FormControl mt={6} display="flex" alignItems="center">
-                    <FormLabel htmlFor="is-done">Status</FormLabel>
+                    <FormLabel htmlFor="is-done">Statut</FormLabel>
                     <Switch
                       onChange={(e) => field.onChange(e.target.checked)}
                       isChecked={field.value}
@@ -199,15 +203,15 @@ export const AddUpdateCaseModal = ({
             <ModalFooter>
               <Stack direction="row" spacing={4}>
                 <Button onClick={onClose} disabled={isSubmitting}>
-                  Close
+                  Fermer
                 </Button>
                 <Button
                   colorScheme="green"
                   type="submit"
                   isLoading={isSubmitting}
-                  loadingText={editable ? "Updating" : "Creating"}
+                  loadingText={editable ? "Mise à jour..." : "Création..."}
                 >
-                  {editable ? "Update" : "Create"}
+                  {editable ? "Mettre à jour" : "Créer"}
                 </Button>
               </Stack>
             </ModalFooter>

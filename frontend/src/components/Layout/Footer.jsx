@@ -10,7 +10,7 @@ export const Footer = () => {
       color={useColorModeValue("blackAlpha.900", "whiteAlpha.700")}
       px={8}>
       <Text textAlign="center" fontSize="sm">
-        &copy; {new Date().getFullYear()} MalarIA Corps. <br /> All rights reserved.
+        &copy; {new Date().getFullYear()} MalarIA Corps. <br /> Tout droit reservé.
       </Text>
     </Box>
   );

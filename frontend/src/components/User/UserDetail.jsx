@@ -40,8 +40,6 @@ import {
         });
     };
   
-   
-  
     if (loading) {
       return (
         <Container mt={6}>
@@ -65,7 +63,7 @@ import {
             colorScheme="gray"
             onClick={() => navigate("/", { replace: true })}
           >
-            Back
+            Retour
           </Button>
         </Container>
         <Container
@@ -82,22 +80,19 @@ import {
           </Text>
   
           <Text fontSize={18} fontWeight="semibold" mt={2}>
-            email:
+            Email :
           </Text>
           <Text bg="gray.500" p={2} rounded="lg">
             {user.email}
           </Text>
   
           <Text fontSize={18} fontWeight="semibold" mt={2}>
-             Name:
+            Nom :
           </Text>
           <Text bg="gray.500" p={2} rounded="lg">
-            {user.first_name}       {user.last_name}
+            {user.first_name} {user.last_name}
           </Text>
   
-          
-  
-        
           <UpdateUserModal
             my={3}
             editable={true}
@@ -108,7 +103,6 @@ import {
             }}
             onSuccess={fetchUser}
           />
-          
         </Container>
       </>
     );

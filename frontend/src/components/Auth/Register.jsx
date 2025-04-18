@@ -28,7 +28,7 @@ export const Register = () => {
     try {
       await axiosInstance.post("/users/create", values);
       toast({
-        title: "Account created successfully.",
+        title: "Compte créé avec succès.",
         status: "success",
         isClosable: true,
         duration: 1500,
@@ -43,7 +43,9 @@ export const Register = () => {
       });
     }
   };
+
   const role = watch("role", "");
+
   return (
     <Flex height="100vh" alignItems="center" justifyContent="center">
       <Flex
@@ -53,17 +55,17 @@ export const Register = () => {
         p={12}
         rounded={6}
       >
-        <Heading mb={6}>Register</Heading>
+        <Heading mb={6}>Inscription</Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl isInvalid={errors.email}>
             <Input
-              placeholder="Email"
+              placeholder="Adresse e-mail"
               background={useColorModeValue("gray.300", "gray.600")}
               type="email"
               size="lg"
               mt={6}
               {...register("email", {
-                required: "This is required field",
+                required: "Ce champ est requis",
               })}
             />
             <FormErrorMessage>
@@ -73,21 +75,21 @@ export const Register = () => {
 
           <FormControl isInvalid={errors.username}>
             <Input
-              placeholder="username"
+              placeholder="Nom d'utilisateur"
               background={useColorModeValue("gray.300", "gray.600")}
               type="text"
               variant="filled"
               size="lg"
               mt={6}
               {...register("username", {
-                required: "This filed is required",
+                required: "Ce champ est requis",
                 minLength: {
                   value: 5,
-                  message: "Username must be at least 5 characters",
+                  message: "Le nom d'utilisateur doit contenir au moins 5 caractères",
                 },
                 maxLength: {
                   value: 24,
-                  message: "Username must be at most 24 characters",
+                  message: "Le nom d'utilisateur doit contenir au maximum 24 caractères",
                 },
               })}
             />
@@ -98,39 +100,39 @@ export const Register = () => {
 
           <FormControl isInvalid={errors.role}>
             <Select
-              {...register("role", { required: "Role selection is required" })}
-              placeholder="Select role"
+              {...register("role", { required: "La sélection d'un rôle est requise" })}
+              placeholder="Sélectionnez un rôle"
               background={useColorModeValue("gray.300", "gray.600")}
               size="lg"
               mt={6}
               sx={{
                 option: {
-                  background: useColorModeValue("gray.300", "gray.600")
+                  background: useColorModeValue("gray.300", "gray.600"),
                 },
               }}
             >
-              <option value="simple">Simple</option>
-              <option value="doctor">Doctor</option>
+              <option value="simple">Utilisateur simple</option>
+              <option value="doctor">Médecin</option>
             </Select>
             <FormErrorMessage>
               {errors.role && errors.role.message}
             </FormErrorMessage>
           </FormControl>
 
-          {/* Code Input (Visible only if Doctor is selected) */}
+          {/* Code visible seulement si Médecin est sélectionné */}
           {role === "doctor" && (
             <FormControl isInvalid={errors.code}>
               <Input
-                placeholder="Enter doctor code"
+                placeholder="Code médecin"
                 type="text"
                 backdropBlur="gray.600"
                 size="lg"
                 mt={6}
                 {...register("code", {
-                  required: role === "doctor" ? "Doctor code is required" : false,
+                  required: role === "doctor" ? "Le code médecin est requis" : false,
                   minLength: {
                     value: 4,
-                    message: "Code must be at least 4 characters",
+                    message: "Le code doit contenir au moins 4 caractères",
                   },
                 })}
               />
@@ -142,20 +144,20 @@ export const Register = () => {
 
           <FormControl isInvalid={errors.password}>
             <Input
-              placeholder="Password"
+              placeholder="Mot de passe"
               background={useColorModeValue("gray.300", "gray.600")}
               type="password"
               size="lg"
               mt={6}
               {...register("password", {
-                required: "This is required field",
+                required: "Ce champ est requis",
                 minLength: {
                   value: 5,
-                  message: "Password must be at least 5 characters long",
+                  message: "Le mot de passe doit contenir au moins 5 caractères",
                 },
                 maxLength: {
                   value: 24,
-                  message: "Password must be at most 24 characters",
+                  message: "Le mot de passe doit contenir au maximum 24 caractères",
                 },
               })}
             />
@@ -166,7 +168,7 @@ export const Register = () => {
 
           <Button
             isLoading={isSubmitting}
-            loadingText="Creating account..."
+            loadingText="Création du compte..."
             width="100%"
             colorScheme="green"
             variant="outline"
@@ -174,9 +176,10 @@ export const Register = () => {
             mb={6}
             type="submit"
           >
-            Register
+            S'inscrire
           </Button>
         </form>
+
         <Button
           onClick={() => navigate("/login", { replace: true })}
           width="100%"
@@ -184,7 +187,7 @@ export const Register = () => {
           variant="outline"
           mt={6}
         >
-          Login
+          Se connecter
         </Button>
       </Flex>
     </Flex>

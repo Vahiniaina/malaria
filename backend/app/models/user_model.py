@@ -13,7 +13,7 @@ class User(Document):
     code: str=None
     first_name: Optional[str] = None 
     last_name: Optional[str] = None
-    disabled: Optional[bool] = None
+    disabled: Optional[bool] = False
     
     def __repr__(self) -> str:
         return f"<User {self.email}>"

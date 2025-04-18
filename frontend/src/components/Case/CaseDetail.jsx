@@ -184,7 +184,7 @@ export const CaseDetail = () => {
 
           <Box mt={4}>
             <Text fontSize={18} fontWeight="semibold" color={colors.labelColor} letterSpacing={0.3}>
-              Patient Name:
+              Nom du patient:
             </Text>
             <Text bg={colors.symptomsBg} p={4} rounded="xl" shadow="sm" color={colors.textColor}>
               {cas.patient_name}
@@ -201,7 +201,7 @@ export const CaseDetail = () => {
           </Box>
 
           <Text fontSize={14} color={colors.titleColor} mt={4} textAlign="right">
-            Last Updated: {new Date(cas.updated_at ? cas.updated_at : cas.created_at).toLocaleDateString("en-US", {
+            Modifié le: {new Date(cas.updated_at ? cas.updated_at : cas.created_at).toLocaleDateString("en-US", {
               weekday: "long",
               year: "numeric",
               month: "long",
@@ -212,7 +212,7 @@ export const CaseDetail = () => {
           <AddUpdateCaseModal my={3} editable={true} defaultValues={{ title: cas.title, description: cas.description, symptoms: cas.symptoms, patient_name: cas.patient_name, status: cas.status }} onSuccess={fetchCase} />
 
           <Button isLoading={loading} colorScheme="red" width="100%" onClick={deleteCase}>
-            Delete
+            Supprimer
           </Button>
         </Box>
 
@@ -290,7 +290,7 @@ export const CaseDetail = () => {
           </Box>
 
           <Button isLoading={loading} colorScheme="blue" width="100%" onClick={getDiagnostic}>
-            Get
+            Recevoir le diagnostic 
           </Button>
         </Box>
 
@@ -302,7 +302,7 @@ export const CaseDetail = () => {
       {user.role !== "simple" && (
         <Box bg={colors.cardBg} p={5} rounded="2xl" shadow="lg" borderWidth={1} borderColor={colors.borderColor} mt={4}>
           <Text fontSize={20} fontWeight="semibold" color={colors.descriptionColor} letterSpacing={0.3} mb={2}>
-            Treatment:
+            Traitement:
           </Text>
 
           <Box  >
@@ -314,7 +314,7 @@ export const CaseDetail = () => {
           </Box>
 
           <Button isLoading={loading} colorScheme="blue" width="100%" onClick={getTreatment}>
-            Get
+            Recevoir le traitement
           </Button>
         </Box>
 

@@ -30,7 +30,7 @@ export const ThemeToggler = ({ showLabel = false, ...rest }) => {
           color={textColor}
           _hover={{ color: hoverTextColor }}
         >
-          {colorMode === "dark" ? "Light mode" : "Dark mode"}
+          {colorMode === "dark" ? "Mode clair" : "Mode sombre"}
         </Text>
       )}
     </>

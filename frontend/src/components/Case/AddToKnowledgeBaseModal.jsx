@@ -53,19 +53,15 @@ const transformKnowledge = (knowledges) => {
 
 
 export const AddToKnowledgeBaseModal = ({
-
-
   editable = false,
-  onSuccess = () => { },
+  onSuccess = () => {},
   ...rest
 }) => {
-
-
-
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const { case_id } = useParams();
+
   const {
     handleSubmit,
     register,
@@ -74,23 +70,20 @@ export const AddToKnowledgeBaseModal = ({
   } = useForm();
 
   const onSubmit = async (values) => {
-    console.log("values:", values)
-    values = transformKnowledge(values)
-    console.log("values 2:", values)
+    values = transformKnowledge(values);
     const formattedValues = {
       ...values,
-      updated_at: new Date().toISOString()// Create mode: add both created_at and updated_at
+      updated_at: new Date().toISOString()
     };
     try {
       await axiosInstance.post(`/case/add_case_to_knowledge_base/${case_id}`, formattedValues);
-
       onSuccess();
       onClose();
     } catch (err) {
-      console.log("error on submit")
+      console.log("Erreur lors de la soumission");
       console.error(err.response?.data);
       toast({
-        title: "Something went wrong. Please try again.",
+        title: "Une erreur est survenue. Veuillez réessayer.",
         status: "error",
         isClosable: true,
         duration: 1500,
@@ -101,7 +94,7 @@ export const AddToKnowledgeBaseModal = ({
   return (
     <Box {...rest}>
       <Button w="100%" colorScheme="green" onClick={onOpen}>
-        ADD CASE TO KNOWLEDGE BASE:
+        AJOUTER CE CAS À LA BASE DE CONNAISSANCES
       </Button>
       <Modal
         closeOnOverlayClick={false}
@@ -113,12 +106,12 @@ export const AddToKnowledgeBaseModal = ({
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalContent>
-            <ModalHeader textAlign="center">KNOWLEGDE</ModalHeader>
+            <ModalHeader textAlign="center">BASE DE CONNAISSANCES</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <SimpleGrid columns={[1, 2, 3]} spacing={4}>
                 <Box>
-                  <FormLabel fontSize="xl">Diagnostique</FormLabel>
+                  <FormLabel fontSize="xl">Diagnostic</FormLabel>
 
                   <FormControl>
                     <FormLabel>Paludisme</FormLabel>
@@ -156,63 +149,21 @@ export const AddToKnowledgeBaseModal = ({
                     <FormLabel mb="0">Réanimateur</FormLabel>
                     <Switch {...register("reanimateur")} />
                   </FormControl>
-
-                  {/* <FormControl>
-                    <FormLabel>Suggestion</FormLabel>
-                    <Textarea {...register("suggestion")} placeholder="Suggestion ou remarque..." />
-                  </FormControl> */}
                 </Box>
-
-                {/* Section: Traitement */}
-                {/* <Box>
-                  <FormLabel fontSize="xl">Section Traitement</FormLabel>
-
-                  <FormControl>
-                    <FormLabel>Médicament</FormLabel>
-                    <Input {...register("medicament")} />
-                  </FormControl>
-
-                  <FormControl>
-                    <FormLabel>Dose</FormLabel>
-                    <Input {...register("dose")} />
-                  </FormControl>
-
-                  <FormControl>
-                    <FormLabel>Durée (en jours)</FormLabel>
-                    <NumberInput min={1}>
-                      <NumberInputField {...register("duree", { valueAsNumber: true })} />
-                    </NumberInput>
-                  </FormControl>
-
-                  <FormControl>
-                    <FormLabel>Surveillance</FormLabel>
-                    <Input {...register("surveillance")} />
-                  </FormControl>
-
-                  <FormControl>
-                    <FormLabel>Effets secondaires</FormLabel>
-                    <Input {...register("effets_secondaires")} />
-                  </FormControl>
-
-                  <FormControl>
-                    <FormLabel>Recommandations</FormLabel>
-                    <Input {...register("recommandations")} />
-                  </FormControl>
-                  </Box> */}
               </SimpleGrid>
             </ModalBody>
             <ModalFooter>
               <Stack direction="row" spacing={4}>
                 <Button onClick={onClose} disabled={isSubmitting}>
-                  Close
+                  Fermer
                 </Button>
                 <Button
                   colorScheme="green"
                   type="submit"
                   isLoading={isSubmitting}
-                  loadingText={"Updating"}
+                  loadingText={"Mise à jour..."}
                 >
-                  ADD TO KNOWLEDGE BASE
+                  Ajouter à la base de connaissances
                 </Button>
               </Stack>
             </ModalFooter>

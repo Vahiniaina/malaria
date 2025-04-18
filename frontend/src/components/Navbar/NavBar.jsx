@@ -108,7 +108,7 @@ export const NavBar = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdHome />}
               >
-                Home
+                Acceuil
               </Button>
 
               <Button
@@ -123,7 +123,7 @@ export const NavBar = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdFolder />}
               >
-                My cases
+                Mes consultations
               </Button>
 
               <Button
@@ -138,7 +138,7 @@ export const NavBar = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdBarChart />}
               >
-                Statistique
+                Statistiques
               </Button>
 
               {user.role === "admin" && (
@@ -187,7 +187,7 @@ export const NavBar = () => {
                     _hover={{ color: hoverTextColor }}
                     leftIcon={<MdAccountCircle />}
                   >
-                    My account
+                    Mon compte
                   </Button>
                 </MenuItem>
 
@@ -205,7 +205,7 @@ export const NavBar = () => {
                     _hover={{ color: hoverTextColor }}
                     leftIcon={<MdHelp />}
                   >
-                    Help
+                    Aide
                   </Button>
                 </MenuItem>
 
@@ -219,7 +219,7 @@ export const NavBar = () => {
                     _hover={{ color: hoverTextColor }}
                     leftIcon={<MdLogout />}
                   >
-                    Log out
+                    Deconnexion
                   </Button>
                 </MenuItem>
               </MenuList>
@@ -241,7 +241,7 @@ export const NavBar = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdHome />}
               >
-                Home
+                Acceuil
               </Button>
 
               <Button
@@ -256,7 +256,7 @@ export const NavBar = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdFolder />}
               >
-                My cases
+                Mes consultations
               </Button>
 
               <Button
@@ -271,7 +271,7 @@ export const NavBar = () => {
                 _hover={{ color: hoverTextColor }}
                 leftIcon={<MdBarChart />}
               >
-                Statistique
+                Statistiques
               </Button>
 
               {user.role === "admin" && (

@@ -56,17 +56,17 @@ export const Data = () => {
   return (
     <Container maxW="container.xl" py="10vh">
       <Heading as="h3" size="lg" mb={6}>
-        Malaria Analytics in Madagascar
+        Analyse du Paludisme à Madagascar
       </Heading>
 
-      {/* Data Table */}
+      {/* Tableau de Données */}
       <TableContainer mb={10}>
         <Table variant="striped" colorScheme="blue">
           <Thead>
             <Tr>
-              <Th>Month</Th>
-              <Th isNumeric>Cases</Th>
-              <Th isNumeric>Deaths</Th>
+              <Th>Mois</Th>
+              <Th isNumeric>Cas</Th>
+              <Th isNumeric>Décès</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -81,10 +81,10 @@ export const Data = () => {
         </Table>
       </TableContainer>
 
-      {/* Composite Chart: Monthly Cases & Deaths */}
+      {/* Graphique Composé : Cas & Décès Mensuels */}
       <Box h="400px" mb={10}>
         <Heading as="h4" size="md" mb={3}>
-          Monthly Malaria Cases & Deaths
+          Cas et Décès Mensuels du Paludisme
         </Heading>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={monthlyData}>
@@ -93,16 +93,16 @@ export const Data = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="cases" fill="#3182CE" name="Cases" />
-            <Line type="monotone" dataKey="deaths" stroke="#FF0000" name="Deaths" />
+            <Bar dataKey="cases" fill="#3182CE" name="Cas" />
+            <Line type="monotone" dataKey="deaths" stroke="#FF0000" name="Décès" />
           </ComposedChart>
         </ResponsiveContainer>
       </Box>
 
-      {/* Pie Chart: Regional Distribution */}
+      {/* Diagramme Circulaire : Répartition Régionale */}
       <Box h="400px" mb={10}>
         <Heading as="h4" size="md" mb={3}>
-          Regional Distribution of Malaria Cases
+          Répartition Régionale des Cas de Paludisme
         </Heading>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -127,5 +127,6 @@ export const Data = () => {
     </Container>
   );
 };
+
 
 export default Data;

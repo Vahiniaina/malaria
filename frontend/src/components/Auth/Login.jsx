@@ -27,7 +27,7 @@ export const Login = () => {
       await login(values.email, values.password);
     } catch (error) {
       toast({
-        title: "Invalid email or password",
+        title: "Email ou mot de passe invalide",
         status: "error",
         isClosable: true,
         duration: 1500,
@@ -43,32 +43,32 @@ export const Login = () => {
         p={12}
         rounded={6}
       >
-        <Heading mb={6}>Login</Heading>
+        <Heading mb={6}>Connexion</Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl isInvalid={errors.email}>
             <Input
-              placeholder="Email"
+              placeholder="Adresse e-mail"
               background={useColorModeValue("gray.300", "gray.600")}
               type="email"
               size="lg"
               mt={6}
               {...register("email", {
-                required: "This is required field",
+                required: "Ce champ est requis",
               })}
             />
             <FormErrorMessage>
               {errors.email && errors.email.message}
             </FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={errors.email}>
+          <FormControl isInvalid={errors.password}>
             <Input
-              placeholder="Password"
+              placeholder="Mot de passe"
               background={useColorModeValue("gray.300", "gray.600")}
               type="password"
               size="lg"
               mt={6}
               {...register("password", {
-                required: "This is required field",
+                required: "Ce champ est requis",
               })}
             />
             <FormErrorMessage>
@@ -77,7 +77,7 @@ export const Login = () => {
           </FormControl>
           <Button
             isLoading={isSubmitting}
-            loadingText="Logging in..."
+            loadingText="Connexion en cours..."
             width="100%"
             colorScheme="green"
             variant="outline"
@@ -85,7 +85,7 @@ export const Login = () => {
             mb={6}
             type="submit"
           >
-            Login
+            Connexion
           </Button>
         </form>
         <Button
@@ -95,9 +95,10 @@ export const Login = () => {
           variant="outline"
           mt={6}
         >
-          Register
+          S'inscrire
         </Button>
       </Flex>
     </Flex>
   );
 };
+

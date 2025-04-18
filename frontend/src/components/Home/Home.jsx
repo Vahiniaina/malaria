@@ -32,12 +32,12 @@ const carouselSettings = {
   autoplay: true,
   autoplaySpeed: 3000,
 };
+// ... imports restent inchangés
 
 export const Home = () => {
-  // Define theme-based color constants using alpha values
   const COLORS = {
     bannerBg: useColorModeValue("whiteAlpha.600", "blackAlpha.600"),
-    impactText: useColorModeValue("gray.800", "whiteAlpha.900"), // Lighter text in dark mode
+    impactText: useColorModeValue("gray.800", "whiteAlpha.900"),
     projectBorder: useColorModeValue("gray.200", "gray.600"),
     aboutBg: useColorModeValue("gray.100", "gray.700"),
     footerBg: useColorModeValue("blue.900", "blue.600"),
@@ -47,127 +47,105 @@ export const Home = () => {
 
   return (
     <>
-      {/* Banner Carousel */}
-      {/* Uncomment below to enable the carousel */}
-      {/*
-      <Box bg={COLORS.bannerBg}>
-        <Slider {...carouselSettings}>
-          {bannerImages.map((img, index) => (
-            <Box key={index}>
-              <Image
-                src={img}
-                alt={`Slide ${index + 1}`}
-                w="100%"
-                h="400px"
-                objectFit="cover"
-                fallbackSrc="https://via.placeholder.com/1600x600?text=Image+not+available"
-              />
-            </Box>
-          ))}
-        </Slider>
-      </Box>
-      */}
-
-      {/* Impact Section */}
+      {/* Section Impact */}
       <Container maxW="container.lg" py="20vh">
         <Heading as="h2" size="xl" textAlign="center" mb={4} color={COLORS.impactText}>
-          Our Impact Against Malaria
+          Notre Impact Contre le Paludisme
         </Heading>
         <Text fontSize="lg" textAlign="center" color={COLORS.impactText}>
-          Malaria remains a major global health issue. Our platform provides{" "}
+          Le paludisme demeure un problème majeur de santé publique. Notre plateforme fournit{" "}
           <strong>
-            real-time data, expert system services for diagnosis and treatment, and in-depth documentation
+            des données en temps réel, des services de diagnostic et traitement basés sur un système expert, ainsi qu'une documentation approfondie
           </strong>{" "}
-          to help combat malaria effectively.
+          pour aider à combattre efficacement le paludisme.
         </Text>
       </Container>
 
-      {/* Projects Section */}
+      {/* Section Projets */}
       <Container maxW="container.lg" py={10} color={COLORS.impactText}>
         <Heading as="h2" size="xl" textAlign="center" mb={4}>
-          Featured Projects
+          Projets en Vedette
         </Heading>
         <SimpleGrid columns={[1, 2, 3]} spacing={6}>
           <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg" borderColor={COLORS.projectBorder}>
             <Image
               src="https://source.unsplash.com/featured/300x200?ai"
-              alt="AI Diagnosis"
+              alt="Diagnostic IA"
               fallbackSrc="https://via.placeholder.com/300x200?text=Image+not+available"
             />
             <Heading size="md" mt={3}>
-              AI-Powered Diagnosis
+              Diagnostic par IA
             </Heading>
             <Text>
-              Our AI-based expert system helps diagnose malaria efficiently.
+              Notre système expert basé sur l'IA aide à diagnostiquer efficacement le paludisme.
             </Text>
           </Box>
           <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg" borderColor={COLORS.projectBorder}>
             <Image
               src="https://source.unsplash.com/featured/300x200?data"
-              alt="Real-time Data"
+              alt="Données en temps réel"
               fallbackSrc="https://via.placeholder.com/300x200?text=Image+not+available"
             />
             <Heading size="md" mt={3}>
-              Real-time Malaria Data
+              Données en Temps Réel
             </Heading>
             <Text>
-              Track malaria outbreaks with up-to-date statistics.
+              Suivez les épidémies de paludisme grâce à des statistiques actualisées.
             </Text>
           </Box>
           <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg" borderColor={COLORS.projectBorder}>
             <Image
               src="https://source.unsplash.com/featured/300x200?education"
-              alt="Awareness Campaigns"
+              alt="Campagnes de sensibilisation"
               fallbackSrc="https://via.placeholder.com/300x200?text=Image+not+available"
             />
             <Heading size="md" mt={3}>
-              Awareness Campaigns
+              Campagnes de Sensibilisation
             </Heading>
             <Text>
-              We run awareness programs to educate people about malaria prevention.
+              Nous menons des programmes de sensibilisation pour éduquer sur la prévention du paludisme.
             </Text>
           </Box>
         </SimpleGrid>
       </Container>
 
-      {/* About Us Section */}
-      <Container maxW="container.lg" py={10} bg={COLORS.aboutBg}  color={COLORS.impactText} borderRadius="lg">
+      {/* Section À Propos */}
+      <Container maxW="container.lg" py={10} bg={COLORS.aboutBg} color={COLORS.impactText} borderRadius="lg">
         <Heading as="h2" size="xl" textAlign="center" mb={4}>
-          About Us
+          À Propos de Nous
         </Heading>
         <Text fontSize="lg" textAlign="center">
-          We are a dedicated team of researchers, healthcare professionals, and data scientists working to eradicate
-          malaria through technology and education.
+          Nous sommes une équipe dévouée de chercheurs, professionnels de la santé et scientifiques des données travaillant à éradiquer le paludisme grâce à la technologie et à l’éducation.
         </Text>
       </Container>
 
-      {/* Contact Us Section */}
+      {/* Section Contact */}
       <Container maxW="container.md" py={10}>
         <Heading as="h2" size="xl" textAlign="center" mb={4}>
-          Contact Us
+          Contactez-Nous
         </Heading>
         <VStack spacing={4}>
-          <Input placeholder="Your Name" />
-          <Input placeholder="Your Email" type="email" />
-          <Textarea placeholder="Your Message" />
-          <Button colorScheme="blue">Send Message</Button>
+          <Input placeholder="Votre nom" />
+          <Input placeholder="Votre adresse e-mail" type="email" />
+          <Textarea placeholder="Votre message" />
+          <Button colorScheme="blue">Envoyer le message</Button>
         </VStack>
       </Container>
 
-      {/* Footer */}
+      {/* Pied de Page */}
       <Box bg={COLORS.footerBg} color={COLORS.footerText} py={6} mt={10}>
         <Container maxW="container.lg">
           <SimpleGrid columns={[1, 2]} spacing={6} textAlign="center">
             <Box>
               <Heading as="h4" size="md">
-                Quick Links
+                Liens Rapides
               </Heading>
               <Link href="#" color={COLORS.footerLink}>
-                Home
+                Accueil
               </Link>{" "}
               |{" "}
               <Link href="#" color={COLORS.footerLink}>
-                Data
+                Données
               </Link>{" "}
               |{" "}
               <Link href="#" color={COLORS.footerLink}>
@@ -178,8 +156,8 @@ export const Home = () => {
               <Heading as="h4" size="md">
                 Contact
               </Heading>
-              <Text>Email: malaria-info@example.com</Text>
-              <Text>Phone: +123 456 7890</Text>
+              <Text>Email : malaria-info@example.com</Text>
+              <Text>Téléphone : +123 456 7890</Text>
             </Box>
           </SimpleGrid>
         </Container>

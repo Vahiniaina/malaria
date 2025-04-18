@@ -1,116 +1,111 @@
 import {
-    Button,
-    Center,
-    Container,
-    Spinner,
-    Text,
-    useColorModeValue,
-    useToast,
-  } from "@chakra-ui/react";
-  import { useEffect, useRef, useState } from "react";
-  import { useNavigate, useParams } from "react-router-dom";
-  import axiosInstance from "../../services/axios";
-  import { UpdateUserModal } from "./UpdateUserModal";
-  
-  export const UserAdmin = () => {
-    const [user, setUser] = useState({});
-    const [loading, setLoading] = useState(true);
-    const isMounted = useRef(false);
-    const { user_id } = useParams();
-    const navigate = useNavigate();
-    const toast = useToast();
-    const background = useColorModeValue("gray.300", "gray.600");
-  
-    useEffect(() => {
-      if (isMounted.current) return;
-      fetchUser();
-      isMounted.current = true;
-    }, [user_id]);
-  
-    const fetchUser = () => {
-      setLoading(true);
-      axiosInstance
-        .get(`/users/me`)
-        .then((res) => {
-          setUser(res.data);
-        })
-        .catch((error) => console.error(error))
-        .finally(() => {
-          setLoading(false);
-        });
-    };
-  
-   
-  
-    if (loading) {
-      return (
-        <Container mt={6}>
-          <Center mt={6}>
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="green.200"
-              color="green.500"
-              size="xl"
-            />
-          </Center>
-        </Container>
-      );
-    }
-  
-    return (
-      <>
-        <Container mt={6}>
-          <Button
-            colorScheme="gray"
-            onClick={() => navigate("/", { replace: true })}
-          >
-            Back
-          </Button>
-        </Container>
-        <Container
-          bg={background}
-          minHeight="7rem"
-          my={3}
-          p={3}
-          rounded="lg"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Text fontSize={22} fontWeight="bold">
-            {user.username}
-          </Text>
-  
-          <Text fontSize={18} fontWeight="semibold" mt={2}>
-            email:
-          </Text>
-          <Text bg="gray.500" p={2} rounded="lg">
-            {user.email}
-          </Text>
-  
-          <Text fontSize={18} fontWeight="semibold" mt={2}>
-             Name:
-          </Text>
-          <Text bg="gray.500" p={2} rounded="lg">
-            {user.first_name}       {user.last_name}
-          </Text>
-  
-          
-  
-        
-          <UpdateUserModal
-            my={3}
-            editable={true}
-            defaultValues={{
-              email: user.email,
-              last_name: user.last_name,
-              firt_name: user.firt_name,
-            }}
-            onSuccess={fetchUser}
-          />
-          
-        </Container>
-      </>
-    );
+  Box,
+  Button,
+  Container,
+  Text,
+  Flex,
+  VStack,
+  HStack,
+  Badge,
+  useColorModeValue
+} from "@chakra-ui/react";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
+
+// Register Chart.js modules
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+export const UserAdmin = () => {
+  const background = useColorModeValue("gray.100", "gray.700");
+
+  const chartData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
+      {
+        label: "Cas détectés",
+        data: [5, 12, 9, 15, 7, 10],
+        backgroundColor: "#3182CE"
+      }
+    ]
   };
-  
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: { position: "top" },
+      title: {
+        display: true,
+        text: "Évolution des cas par mois"
+      }
+    }
+  };
+
+  return (
+    <Flex height="100vh">
+      {/* Sidebar */}
+      <Box
+        w="250px"
+        bg={useColorModeValue("gray.200", "gray.800")}
+        p={5}
+        boxShadow="md"
+      >
+        <VStack spacing={4} align="stretch">
+          <Button colorScheme="blue" variant="solid" isActive>
+            📊 Tableau de bord
+          </Button>
+          <Button colorScheme="gray" variant="outline" justifyContent="space-between">
+            <HStack justify="space-between" w="full">
+              <Text>✅ Confirmation médecin</Text>
+              <Badge colorScheme="red">4</Badge>
+            </HStack>
+          </Button>
+          <Button colorScheme="gray" variant="outline">
+            👥 Liste des utilisateurs
+          </Button>
+        </VStack>
+      </Box>
+
+      {/* Main content */}
+      <Box flex="1" p={6} bg={background} overflowY="auto">
+        <Text fontSize="2xl" fontWeight="bold" mb={6}>
+          Tableau de bord - Aperçu
+        </Text>
+
+        {/* KPI Section */}
+        <Box bg="whiteAlpha.900" p={5} borderRadius="lg" shadow="md" mb={6}>
+          <HStack spacing={6} justify="space-around">
+            <Box textAlign="center">
+              <Text fontSize="sm" color="gray.500">Utilisateurs</Text>
+              <Text fontSize="2xl" fontWeight="bold">35</Text>
+            </Box>
+            <Box textAlign="center">
+              <Text fontSize="sm" color="gray.500">Médecins</Text>
+              <Text fontSize="2xl" fontWeight="bold">10</Text>
+            </Box>
+            <Box textAlign="center">
+              <Text fontSize="sm" color="gray.500">Simples</Text>
+              <Text fontSize="2xl" fontWeight="bold">25</Text>
+            </Box>
+            <Box textAlign="center">
+              <Text fontSize="sm" color="gray.500">Total des cas</Text>
+              <Text fontSize="2xl" fontWeight="bold">58</Text>
+            </Box>
+          </HStack>
+        </Box>
+
+        {/* Chart Section */}
+        <Box bg="whiteAlpha.900" p={5} borderRadius="lg" shadow="md">
+          <Bar data={chartData} options={chartOptions} />
+        </Box>
+      </Box>
+    </Flex>
+  );
+};

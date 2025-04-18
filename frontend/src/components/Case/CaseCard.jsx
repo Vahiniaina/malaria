@@ -22,7 +22,7 @@ export const CaseCard = ({ cas }) => {
       <Text>{cas.title}</Text>
 
       <Text>
-         Last updated at <br/> {new Date(cas.updated_at ?cas.updated_at:cas.created_at).toLocaleDateString("en-US", {
+         Modifié le <br/> {new Date(cas.updated_at ?cas.updated_at:cas.created_at).toLocaleDateString("fr-FR", {
                 weekday: "long",  // e.g., Monday
                 year: "numeric",  // e.g., 2025
                 month: "long",    // e.g., February
@@ -30,7 +30,7 @@ export const CaseCard = ({ cas }) => {
           })}
       </Text>
       <Badge colorScheme={cas.status ? "green" : "purple"}>
-        {cas.status ? "Healed" : "Still occurring"}
+        {cas.status ? "Guerri" : "En cours"}
       </Badge>
     </Flex>
   );

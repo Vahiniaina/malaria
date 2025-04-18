@@ -61,16 +61,11 @@ const transformAnalyses = (analyses) => {
 
 
 export const AddUpdateAnalysesModal = ({
-
-
   editable = false,
   defaultValues = {},
-  onSuccess = () => { },
+  onSuccess = () => {},
   ...rest
 }) => {
-
-
-
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
@@ -85,23 +80,20 @@ export const AddUpdateAnalysesModal = ({
   });
 
   const onSubmit = async (values) => {
-    console.log("values:", values)
-    values = transformAnalyses(values)
-    console.log("values 2:", values)
+    values = transformAnalyses(values);
     const formattedValues = {
       ...values,
-      updated_at: new Date().toISOString()// Create mode: add both created_at and updated_at
+      updated_at: new Date().toISOString()
     };
     try {
       await axiosInstance.put(`/case/update_analyses/${case_id}`, formattedValues);
-
       onSuccess();
       onClose();
     } catch (err) {
-      console.log("error on submit")
+      console.log("Erreur lors de la soumission");
       console.error(err.response?.data);
       toast({
-        title: "Something went wrong. Please try again.",
+        title: "Une erreur est survenue. Veuillez réessayer.",
         status: "error",
         isClosable: true,
         duration: 1500,
@@ -112,7 +104,7 @@ export const AddUpdateAnalysesModal = ({
   return (
     <Box {...rest}>
       <Button w="100%" colorScheme="green" onClick={onOpen}>
-        ADD POSITVE ANALYSE:
+        AJOUTER ANALYSE POSITIVE
       </Button>
       <Modal
         closeOnOverlayClick={false}
@@ -128,10 +120,16 @@ export const AddUpdateAnalysesModal = ({
             <ModalCloseButton />
             <ModalBody>
               <SimpleGrid columns={[1, 2, 3]} spacing={4}>
-                
                 {analyseList.map(([key, question]) => (
                   <Box key={key}>
-                    <Tooltip label={question} hasArrow placement="top" bg="gray.700" color="white" fontSize="sm">
+                    <Tooltip
+                      label={question}
+                      hasArrow
+                      placement="top"
+                      bg="gray.700"
+                      color="white"
+                      fontSize="sm"
+                    >
                       <Text cursor="help">{key.replaceAll("_", " ")}</Text>
                     </Tooltip>
                     <Switch size="md" colorScheme="green" {...register(key)} />
@@ -142,15 +140,15 @@ export const AddUpdateAnalysesModal = ({
             <ModalFooter>
               <Stack direction="row" spacing={4}>
                 <Button onClick={onClose} disabled={isSubmitting}>
-                  Close
+                  Fermer
                 </Button>
                 <Button
                   colorScheme="green"
                   type="submit"
                   isLoading={isSubmitting}
-                  loadingText={"Updating"}
+                  loadingText={"Mise à jour..."}
                 >
-                  UPDATE
+                  Mettre à jour
                 </Button>
               </Stack>
             </ModalFooter>

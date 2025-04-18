@@ -64,12 +64,13 @@ export const Welcome = () => {
     // borderColor={useColorModeValue('gray.200', 'gray.600')}
     >
       <Heading as="h2" size="xl" mb={6} color={textColor}>
-        Hello, {user.username}! <br /> Welcome to Malaria Expert System
+        Bonjour, {user.username} ! <br /> Bienvenue sur le Système Expert du Paludisme
       </Heading>
       <Text fontSize="lg" mb={8} color={textColor}>
-        We help with diagnosis, treatment with fuzzy rule-based decision making for malaria.
-        Explore our expert system to create new cases and enhance malaria disease management.
+        Nous vous aidons dans le diagnostic et le traitement grâce à un système de décision basé sur des règles floues.
+        Explorez notre système expert pour créer de nouveaux cas et améliorer la gestion de la maladie du paludisme.
       </Text>
+
     </Box>
   );
 };

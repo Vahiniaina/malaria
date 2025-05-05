@@ -8,7 +8,10 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
+  IconButton,
+  useColorModeValue,
   Button,
+  Stack,
   useDisclosure,
   Box
 } from "@chakra-ui/react";
@@ -35,16 +38,20 @@ import { NavBar } from "./components/Navbar/NavBar";
 import { CaseDetail } from "./components/Case/CaseDetail";
 import { CaseStatistics } from "./components/Case/CaseStatistics";
 import { UserDetail } from "./components/User/UserDetail";
-import { UserAdmin } from "./components/User/UserAdmin";
+import { Menu } from "./components/Admin/Menu";
 import { CaseList } from "./components/Case/CaseList";
 import { AuthConsumer, AuthProvider } from "./context/JWTAuthContext";
 import { NavBarPublic } from "./components/Navbar/NavBarPublic";
 import { Welcome } from "./components/Case/Welcome";
 import { AddUpdateCaseModal } from "./components/Case/AddUpdateCaseModal";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { Dashboard } from "./components/Admin/Dashboard";
+import { UserManage } from "./components/Admin/UserManage";
 
 function App() {
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
 
   const btnRef = useRef();
 
@@ -128,7 +135,7 @@ function App() {
                                   <DrawerCloseButton />
                                   <DrawerHeader>
                                     <Box  >
-                                      <AddUpdateCaseModal/>
+                                      <AddUpdateCaseModal />
                                     </Box>
                                   </DrawerHeader>
 
@@ -282,14 +289,132 @@ function App() {
                       }
                     />
 
-                    <Route
-                      path="administration"
-                      element={
-                        <Authenticated>
-                          <UserAdmin />
-                        </Authenticated>
-                      }
-                    />
+                    <Route path="/administration" >
+                      <Route index element={<Navigate to="dashboard" replace />} />
+                      <Route
+                        path="dashboard"
+                        element={
+                          <Authenticated>
+                            <Flex direction={{ base: "column", md: "row" }} h="90vh" w="100vw">
+                              {/* Mobile: Bouton et Drawer visible en base seulement */}
+                              <Box display={{ base: "block", md: "none" }} p={4}>
+                                <IconButton
+                                  aria-label="Ouvrir/Fermer le menu"
+                                  icon={isOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                                  onClick={onToggle}
+                                  variant="ghost"
+                                  size="md"
+                                  colorScheme="teal"
+                                />
+
+                                <Drawer
+                                  closeOnInteractOutside={false}
+                                  isOpen={isOpen}
+                                  placement='left'
+                                  onClose={onClose}
+                                  finalFocusRef={btnRef}
+                                  size="md" // ~30vw
+                                >
+                                  <DrawerOverlay />
+                                  <DrawerContent>
+                                    <DrawerCloseButton />
+
+                                    <DrawerBody overflowY="scroll">
+                                      <Menu />
+                                    </DrawerBody>
+
+                                  </DrawerContent>
+                                </Drawer>
+                              </Box>
+
+                              {/* Sidebar visible en md+ */}
+                              <Flex
+                                direction="column"
+                                w={{ md: "30vw" }}
+                                display={{ base: "none", md: "flex" }}
+                                bg="gray.50"
+                                h="100%"
+                              >
+                                <Box flex="1" overflowY="scroll" p={2}>
+                                  <Menu />
+                                </Box>
+                              </Flex>
+
+                              <Box
+                                flex="1"
+                                overflowY="scroll"
+                                p={4}
+                              >
+                                < Dashboard />
+                              </Box>
+                            </Flex>
+
+                          </Authenticated>
+                        }
+                      />
+
+<Route
+                        path="user_management"
+                        element={
+                          <Authenticated>
+                            <Flex direction={{ base: "column", md: "row" }} h="90vh" w="100vw">
+                              {/* Mobile: Bouton et Drawer visible en base seulement */}
+                              <Box display={{ base: "block", md: "none" }} p={4}>
+                                <IconButton
+                                  aria-label="Ouvrir/Fermer le menu"
+                                  icon={isOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                                  onClick={onToggle}
+                                  variant="ghost"
+                                  size="md"
+                                  colorScheme="teal"
+                                />
+
+                                <Drawer
+                                  closeOnInteractOutside={false}
+                                  isOpen={isOpen}
+                                  placement='left'
+                                  onClose={onClose}
+                                  finalFocusRef={btnRef}
+                                  size="md" // ~30vw
+                                >
+                                  <DrawerOverlay />
+                                  <DrawerContent>
+                                    <DrawerCloseButton />
+
+                                    <DrawerBody overflowY="scroll">
+                                      <Menu />
+                                    </DrawerBody>
+
+                                  </DrawerContent>
+                                </Drawer>
+                              </Box>
+
+                              {/* Sidebar visible en md+ */}
+                              <Flex
+                                direction="column"
+                                w={{ md: "30vw" }}
+                                display={{ base: "none", md: "flex" }}
+                                bg="gray.50"
+                                h="100%"
+                              >
+                                <Box flex="1" overflowY="scroll" p={2}>
+                                  <Menu />
+                                </Box>
+                              </Flex>
+
+                              <Box
+                                flex="1"
+                                overflowY="scroll"
+                                p={4}
+                              >
+                                < UserManage />
+                              </Box>
+                            </Flex>
+
+                          </Authenticated>
+                        }
+                      />
+                    </Route>
                     <Route path="*" element={<Navigate to="/" />} />
                   </Route>
 

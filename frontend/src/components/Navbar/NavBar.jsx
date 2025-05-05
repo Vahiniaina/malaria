@@ -141,7 +141,7 @@ export const NavBar = () => {
                 Statistiques
               </Button>
 
-              {user.role === "admin" && (
+              {user.role === "Admin" && (
                 <Button
                   onClick={() => navigate(`/administration`, { replace: true })}
                   variant="ghost"

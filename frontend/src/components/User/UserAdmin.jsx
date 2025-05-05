@@ -1,6 +1,14 @@
 import {
-  Box,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
   Button,
+  Box,
+  useDisclosure,
   Container,
   Text,
   Flex,
@@ -19,92 +27,79 @@ import {
   Tooltip,
   Legend
 } from "chart.js";
+import { useRef } from "react";
 
 // Register Chart.js modules
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export const UserAdmin = () => {
-  const background = useColorModeValue("gray.100", "gray.700");
 
-  const chartData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-    datasets: [
-      {
-        label: "Cas détectés",
-        data: [5, 12, 9, 15, 7, 10],
-        backgroundColor: "#3182CE"
-      }
-    ]
-  };
-
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: { position: "top" },
-      title: {
-        display: true,
-        text: "Évolution des cas par mois"
-      }
-    }
-  };
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = useRef();
 
   return (
-    <Flex height="100vh">
-      {/* Sidebar */}
-      <Box
-        w="250px"
-        bg={useColorModeValue("gray.200", "gray.800")}
-        p={5}
-        boxShadow="md"
-      >
-        <VStack spacing={4} align="stretch">
-          <Button colorScheme="blue" variant="solid" isActive>
-            📊 Tableau de bord
-          </Button>
-          <Button colorScheme="gray" variant="outline" justifyContent="space-between">
-            <HStack justify="space-between" w="full">
-              <Text>✅ Confirmation médecin</Text>
-              <Badge colorScheme="red">4</Badge>
-            </HStack>
-          </Button>
-          <Button colorScheme="gray" variant="outline">
-            👥 Liste des utilisateurs
-          </Button>
-        </VStack>
+    <Flex direction={{ base: "column", md: "row" }} h="90vh" w="100vw">
+      {/* Mobile: Bouton et Drawer visible en base seulement */}
+      <Box display={{ base: "block", md: "none" }} p={4}>
+        <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
+          Open Case List
+        </Button>
+
+        <Drawer
+          closeOnInteractOutside={false}
+          isOpen={isOpen}
+          placement='left'
+          onClose={onClose}
+          finalFocusRef={btnRef}
+          size="md" // ~30vw
+        >
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>
+              <Box  >uuu
+              </Box>
+            </DrawerHeader>
+
+            <DrawerBody overflowY="scroll">
+              ll
+            </DrawerBody>
+
+            <DrawerFooter>ff
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </Box>
 
-      {/* Main content */}
-      <Box flex="1" p={6} bg={background} overflowY="auto">
-        <Text fontSize="2xl" fontWeight="bold" mb={6}>
-          Tableau de bord - Aperçu
-        </Text>
-
-        {/* KPI Section */}
-        <Box bg="whiteAlpha.900" p={5} borderRadius="lg" shadow="md" mb={6}>
-          <HStack spacing={6} justify="space-around">
-            <Box textAlign="center">
-              <Text fontSize="sm" color="gray.500">Utilisateurs</Text>
-              <Text fontSize="2xl" fontWeight="bold">35</Text>
-            </Box>
-            <Box textAlign="center">
-              <Text fontSize="sm" color="gray.500">Médecins</Text>
-              <Text fontSize="2xl" fontWeight="bold">10</Text>
-            </Box>
-            <Box textAlign="center">
-              <Text fontSize="sm" color="gray.500">Simples</Text>
-              <Text fontSize="2xl" fontWeight="bold">25</Text>
-            </Box>
-            <Box textAlign="center">
-              <Text fontSize="sm" color="gray.500">Total des cas</Text>
-              <Text fontSize="2xl" fontWeight="bold">58</Text>
-            </Box>
-          </HStack>
+      {/* Sidebar visible en md+ */}
+      <Flex
+        direction="column"
+        w={{ md: "30vw" }}
+        display={{ base: "none", md: "flex" }}
+        bg="gray.50"
+        h="100%"
+      >
+        <Box>
+          uu
         </Box>
-
-        {/* Chart Section */}
-        <Box bg="whiteAlpha.900" p={5} borderRadius="lg" shadow="md">
-          <Bar data={chartData} options={chartOptions} />
+        <Box flex="1" overflowY="scroll" p={2}>
+          ll
         </Box>
+        <Box
+          bg="blackAlpha.100"
+          color="blackAlpha.900"
+          p={2}
+          overflowY="hidden"
+        >ff
+        </Box>
+      </Flex>
+
+      {/* Main content: Welcome */}
+      <Box
+        flex="1"
+        overflowY="scroll"
+        p={4}
+      >ww
       </Box>
     </Flex>
   );

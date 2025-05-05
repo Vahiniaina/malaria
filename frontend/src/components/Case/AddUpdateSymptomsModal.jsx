@@ -15,6 +15,10 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
   useColorModeValue,
   useDisclosure,
   useToast,
@@ -26,7 +30,7 @@ import {
   RadioGroup,
   Radio
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useState } from "react"
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../services/axios";
@@ -77,7 +81,7 @@ const transformSymptoms = (symptoms) => {
 export const AddUpdateSymptomsModal = ({
   editable = false,
   defaultValues = {},
-  onSuccess = () => {},
+  onSuccess = () => { },
   ...rest
 }) => {
   const navigate = useNavigate();
@@ -86,6 +90,7 @@ export const AddUpdateSymptomsModal = ({
   const { case_id } = useParams();
 
   const {
+    control,
     handleSubmit,
     register,
     formState: { isSubmitting },
@@ -145,12 +150,35 @@ export const AddUpdateSymptomsModal = ({
                       color="white"
                       fontSize="sm"
                     >
-                      <Text cursor="help">{key.replaceAll("_", " ")}</Text>
+                      <Text cursor="help" mb={2}>
+                        {key.replaceAll("_", " ")}
+                      </Text>
                     </Tooltip>
-                    <Switch size="md" colorScheme="green" {...register(key)} />
+
+                    <Controller
+                      name={key}
+                      control={control}
+                      defaultValue={0}
+                      render={({ field }) => (
+                        <Slider
+                          {...field}
+                          min={0}
+                          max={10}
+                          step={1}
+                          colorScheme="green"
+                          onChange={(val) => field.onChange(val)}
+                        >
+                          <SliderTrack>
+                            <SliderFilledTrack />
+                          </SliderTrack>
+                          <SliderThumb boxSize={4} />
+                        </Slider>
+                      )}
+                    />
                   </Box>
                 ))}
               </SimpleGrid>
+
             </ModalBody>
             <ModalFooter>
               <Stack direction="row" spacing={4}>

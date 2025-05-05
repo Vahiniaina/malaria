@@ -127,7 +127,9 @@ function App() {
                                 <DrawerContent>
                                   <DrawerCloseButton />
                                   <DrawerHeader>
-                                    <AddUpdateCaseModal />
+                                    <Box  >
+                                      <AddUpdateCaseModal/>
+                                    </Box>
                                   </DrawerHeader>
 
                                   <DrawerBody overflowY="scroll">

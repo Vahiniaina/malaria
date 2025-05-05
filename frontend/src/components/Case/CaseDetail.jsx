@@ -4,6 +4,7 @@ import {
   Container,
   Spinner,
   Box,
+  Flex,
   Text,
   useColorModeValue,
   useToast,
@@ -17,6 +18,7 @@ import { AddUpdateSymptomsModal } from "./AddUpdateSymptomsModal";
 import { AddUpdatePatientDetailsModal } from "./AddUpdatePatientDetailsModal";
 import { AddUpdateAnalysesModal } from "./AddUpdateAnalysesModal";
 import { AddToKnowledgeBaseModal } from "./AddToKnowledgeBaseModal";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 export const CaseDetail = () => {
   const [user, setUser] = useState({});
@@ -174,46 +176,97 @@ export const CaseDetail = () => {
 
         {/* Case Information */}
         <Box bg={colors.cardBg} p={5} rounded="2xl" shadow="lg" borderWidth={1} borderColor={colors.borderColor}>
-          <Text fontSize={26} fontWeight="bold" mb={3} color={colors.titleColor} letterSpacing={0.5}>
-            {cas.title}
-          </Text>
 
-          <Text bg={colors.descriptionBg} mt={2} p={4} rounded="xl" shadow="sm" color={colors.descriptionColor} lineHeight="short">
-            {cas.description}
-          </Text>
-
-          <Box mt={4}>
-            <Text fontSize={18} fontWeight="semibold" color={colors.labelColor} letterSpacing={0.3}>
-              Nom du patient:
-            </Text>
-            <Text bg={colors.symptomsBg} p={4} rounded="xl" shadow="sm" color={colors.textColor}>
-              {cas.patient_name}
-            </Text>
-          </Box>
-
-          <Box mt={4}>
-            <Text fontSize={16} fontWeight="medium" color={colors.statusBg} letterSpacing={0.3}>
-              Status:
-            </Text>
-            <Box bg={colors.statusBg} px={3} py={1.5} rounded="lg" shadow="xs" color="whiteAlpha.900" textAlign="center" fontSize={14} fontWeight="bold" display="inline-block">
-              {cas.status ? "Healed" : "Still Occurring"}
+          <SimpleGrid columns={{ base: 1, md: 3 }} spacingY={3} spacingX={6}>
+            <Box extAlign="left">
+              <Text fontSize="xs" color="gray.500">Cas</Text>
+              <Text fontWeight="semibold">
+                {cas.title}
+              </Text>
             </Box>
+            <Box>
+              <Text fontSize="xs" color="gray.500">Patient</Text>
+              <Text fontWeight="semibold">{cas.patient_name}</Text>
+            </Box>
+
+            <Box>
+              <Text fontSize="xs" color="gray.500">Statut</Text>
+              <Text fontWeight="medium">{cas.status ? "Guéri" : "En cours"}</Text>
+            </Box>
+          </SimpleGrid>
+
+
+          <Box mt={4} textAlign="left">
+            <Text fontSize="sm" color="gray.500" mb={1}>
+              Description
+            </Text>
+            <Text lineHeight="tall">
+              {cas.description}
+            </Text>
           </Box>
 
-          <Text fontSize={14} color={colors.titleColor} mt={4} textAlign="right">
-            Modifié le: {new Date(cas.updated_at ? cas.updated_at : cas.created_at).toLocaleDateString("en-US", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </Text>
+          <Box mt={4} textAlign="left">
+            <Flex align="center" gap={2}>
+              <Text fontSize="sm" color="gray.500" whiteSpace="nowrap">
+                Dernière mise à jour :
+              </Text>
+              <Text fontSize="sm">
+                {new Date(cas.updated_at).toLocaleDateString("fr-FR", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </Text>
+            </Flex>
+          </Box>
 
-          <AddUpdateCaseModal my={3} editable={true} defaultValues={{ title: cas.title, description: cas.description, symptoms: cas.symptoms, patient_name: cas.patient_name, status: cas.status }} onSuccess={fetchCase} />
+          <Box mt={4} textAlign="left">
+            <Flex align="center" gap={2}>
+              <Text fontSize="sm" color="gray.500" whiteSpace="nowrap">
+                Créer à :
+              </Text>
+              <Text fontSize="sm">
+                {new Date(cas.created_at).toLocaleDateString("fr-FR", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </Text>
+            </Flex>
+          </Box>
 
-          <Button isLoading={loading} colorScheme="red" width="100%" onClick={deleteCase}>
-            Supprimer
-          </Button>
+
+
+
+          <Flex gap={4} my={3}>
+            <Box flex="1">
+              <AddUpdateCaseModal
+                editable={true}
+                defaultValues={{
+                  title: cas.title,
+                  description: cas.description,
+                  symptoms: cas.symptoms,
+                  patient_name: cas.patient_name,
+                  status: cas.status
+                }}
+                onSuccess={fetchCase}
+              />
+            </Box>
+
+            <Button
+              isLoading={loading}
+              colorScheme="red"
+              flex="1"
+              onClick={deleteCase}
+              leftIcon={<DeleteIcon />}
+            >
+              Supprimer
+            </Button>
+          </Flex>
+
+
         </Box>
 
         {/* Patient details  Section */}
@@ -290,7 +343,7 @@ export const CaseDetail = () => {
           </Box>
 
           <Button isLoading={loading} colorScheme="blue" width="100%" onClick={getDiagnostic}>
-            Recevoir le diagnostic 
+            Recevoir le diagnostic
           </Button>
         </Box>
 
@@ -299,32 +352,32 @@ export const CaseDetail = () => {
 
 
 
-      {user.role !== "simple" && (
-        <Box bg={colors.cardBg} p={5} rounded="2xl" shadow="lg" borderWidth={1} borderColor={colors.borderColor} mt={4}>
-          <Text fontSize={20} fontWeight="semibold" color={colors.descriptionColor} letterSpacing={0.3} mb={2}>
-            Traitement:
-          </Text>
+        {user.role !== "simple" && (
+          <Box bg={colors.cardBg} p={5} rounded="2xl" shadow="lg" borderWidth={1} borderColor={colors.borderColor} mt={4}>
+            <Text fontSize={20} fontWeight="semibold" color={colors.descriptionColor} letterSpacing={0.3} mb={2}>
+              Traitement:
+            </Text>
 
-          <Box  >
-            {Object.entries(cas.treatment || {}).map(([key, value]) => (
-              <Box key={key} bg={colors.symptomsBg} m={2} p={2} size="sm" rounded="xl" shadow="sm" color={colors.textColor}>
-                {key} : {value}
-              </Box>
-            ))}
+            <Box  >
+              {Object.entries(cas.treatment || {}).map(([key, value]) => (
+                <Box key={key} bg={colors.symptomsBg} m={2} p={2} size="sm" rounded="xl" shadow="sm" color={colors.textColor}>
+                  {key} : {value}
+                </Box>
+              ))}
+            </Box>
+
+            <Button isLoading={loading} colorScheme="blue" width="100%" onClick={getTreatment}>
+              Recevoir le traitement
+            </Button>
           </Box>
 
-          <Button isLoading={loading} colorScheme="blue" width="100%" onClick={getTreatment}>
-            Recevoir le traitement
-          </Button>
-        </Box>
 
-
-      )}
-      {user.role !== "simple" && (
-        <Box>
-          <AddToKnowledgeBaseModal my={3} onSuccess={fetchCase} />
-        </Box>
-      )}
+        )}
+        {user.role !== "simple" && (
+          <Box>
+            <AddToKnowledgeBaseModal my={3} onSuccess={fetchCase} />
+          </Box>
+        )}
       </Box>
     </>
   );

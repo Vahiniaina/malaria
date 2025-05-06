@@ -125,7 +125,7 @@
 )
 
 
-(defrule treat_simple
+(defrule treat_simple   
     ; (declare (salience 100))
 	?diagnostique <- (diagnostique (id ?id)(degre ?degre))
     ?patient <- (patient (id ?id) (enceinte ?enceinte) (enceinte_trim ?enceinte_trim))
@@ -133,11 +133,13 @@
     =>
 	(bind ?medicament1 "ACT artéméther + luméfantrine ou artésunate + amodiaquine ou artésunate + méfloquine ou artésunate + sulfadoxine-pyriméthamine ou dihydro-artémisinine_arténimol + pipéraquine"
     )
+    (bind ?duree1 "5 à <9 kg : 25 mg AS + 67.5 mg AQ / jour ; ≥35 kg : 200 mg AS + 540 mg AQ / jour")
 
 	(bind ?medicament2 "quinine+clindamycine ou atovaquone-proguanil ")
-    (bind ?duree2 "7 jours")
+    (bind ?duree2 " 10 mg/kg toutes les 8 h pendant 7 jours (voie orale ou IV selon gravité) pour Q+C et 10 mg/kg toutes les 12 h pendant 7 jours pour A")
 
 	(bind ?medicament3 "artéméther-luméfantrine  ")
+    (bind ?duree3 "3 jours: 2 prises le 1er jour (à 0 h et à 8 h), puis 1 prise matin et soir les 2 jours suivants.")
 
     (if (and (eq ?enceinte TRUE) (eq ?enceinte_trim 1er) (eq ?degre simple))
         then 
@@ -146,12 +148,12 @@
 
     (if (and (eq ?enceinte TRUE) (neq ?enceinte_trim 1er) (eq ?degre simple))
         then 
-	(modify ?traitement (id ?id)(medicament ?medicament3) )    
+	(modify ?traitement (id ?id)(medicament ?medicament3)  (duree ?duree3))    
     )
 
     (if (and (eq ?enceinte FALSE)  (eq ?degre simple))
         then 
-	(modify ?traitement (id ?id)(medicament ?medicament1) )    
+	(modify ?traitement (id ?id)(medicament ?medicament1) (duree ?duree1) )    
     )
 )
 
@@ -162,8 +164,9 @@
     ?traitement <- (traitement (id ?id))
 	(test (eq ?degre grave))
     =>
-	(bind ?medicament "Traitement grave")
-	(modify ?traitement (id ?id)(medicament ?medicament))
+	(bind ?medicament "Artésunate injectable (IV ou IM) ou Quinine injectable")
+    (bind ?duree2 "Pour AI  Initialement : 3,2 mg/kg IM à l’heure 0 Puis 1,6 mg/kg IM par jour et pour QI  Dose de charge : 20 mg/kg en perfusion lente sur 4 h Ensuite : 10 mg/kg toutes les 8 heures, en perfusion lente sur 4 h")
+	(modify ?traitement (id ?id)(medicament ?medicament) (duree ?duree2))
     
 )
 

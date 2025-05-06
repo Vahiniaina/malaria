@@ -1,5 +1,6 @@
 import { Box, Center, Spinner, useColorModeValue } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import axiosInstance from "../../services/axios";
 // import { AddUpdateCaseModal } from "./AddUpdateCaseModal";
 import { CaseCard } from "./CaseCard";
@@ -8,6 +9,7 @@ export const CaseList = () => {
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
   const isMounted = useRef(false);
+  const { case_id } = useParams();
 
   useEffect(() => {
     if (isMounted.current) return;

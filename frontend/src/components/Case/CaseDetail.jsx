@@ -123,8 +123,10 @@ export const CaseDetail = () => {
           duration: 2000,
         });
       })
-      .finally(() => setLoading(false));
-    fetchCase();
+      .finally(() => {
+        fetchCase();
+        setLoading(false);
+      });
   };
 
 
@@ -150,8 +152,10 @@ export const CaseDetail = () => {
           duration: 2000,
         });
       })
-      .finally(() => setLoading(false));
-    fetchCase();
+      .finally(() => {
+        fetchCase();
+        setLoading(false);
+      });
   };
 
   if (loading) {
@@ -272,7 +276,7 @@ export const CaseDetail = () => {
         {/* Patient details  Section */}
         <Box bg={colors.cardBg} p={5} rounded="2xl" shadow="lg" borderWidth={1} borderColor={colors.borderColor} mt={4}>
           <Text fontSize={20} fontWeight="semibold" color={colors.descriptionColor} letterSpacing={0.3} mb={2}>
-            Patient details:
+            Details du Patient:
           </Text>
 
           <Box as={SimpleGrid} columns={{ base: 2, lg: 4 }}>

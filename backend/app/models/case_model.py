@@ -14,7 +14,7 @@ class Case(Document):
     diagnostic: Dict[str, Any]= {"diagnostic": None}
     analyses: Dict[str, Any]={"analyses":None}
     treatment: Dict[str, Any]={"treatment": None} 
-    patient_details: Dict[str, Any]={"treatment": None}    
+    patient_details: Dict[str, Any]={"patient_details": None}    
     patient_name: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)

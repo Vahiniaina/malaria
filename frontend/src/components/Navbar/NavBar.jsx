@@ -61,8 +61,8 @@ export const NavBar = () => {
       <Box
         bg={bgColor} // Softer dark mode navbar
         color={textColor} // Softer text color
-        border="1px solid"
-        borderColor="gray.300"
+        // border="1px solid"
+        // borderColor="gray.300"
       >
         <Flex
           px={4}
@@ -117,7 +117,7 @@ export const NavBar = () => {
                 fontWeight={location.pathname.startsWith('/cases') ? "bold" : "normal"}
                 borderBottom={location.pathname.startsWith('/cases') ? "2px solid" : "2px solid transparent"}
                 borderColor={location.pathname.startsWith('/cases') ? textColor : "transparent"}
-                borderRadius="0" 
+                borderRadius="0"
                 bg="transparent"
                 color="inherit"
                 _hover={{ color: hoverTextColor }}
@@ -125,31 +125,31 @@ export const NavBar = () => {
               >
                 Mes consultations
               </Button>
-
-              <Button
-                onClick={() => navigate(`/statistics`, { replace: true })}
-                variant="ghost"
-                fontWeight={(location.pathname === '/statistics') ? "bold" : "normal"}
-                borderBottom={(location.pathname === '/statistics') ? "2px solid" : "2px solid transparent"}
-                borderColor={(location.pathname === '/statistics') ? textColor : "transparent"}
-                borderRadius="0" 
-                bg="transparent"
-                color="inherit"
-                _hover={{ color: hoverTextColor }}
-                leftIcon={<MdBarChart />}
-              >
-                Statistiques
-              </Button>
-
+              {user.role !== "simple" && (
+                <Button
+                  onClick={() => navigate(`/statistics`, { replace: true })}
+                  variant="ghost"
+                  fontWeight={(location.pathname === '/statistics') ? "bold" : "normal"}
+                  borderBottom={(location.pathname === '/statistics') ? "2px solid" : "2px solid transparent"}
+                  borderColor={(location.pathname === '/statistics') ? textColor : "transparent"}
+                  borderRadius="0"
+                  bg="transparent"
+                  color="inherit"
+                  _hover={{ color: hoverTextColor }}
+                  leftIcon={<MdBarChart />}
+                >
+                  Statistiques
+                </Button>
+              )}
               {user.role === "Admin" && (
                 <Button
                   onClick={() => navigate(`/administration`, { replace: true })}
                   variant="ghost"
-                fontWeight={(location.pathname === '/administration') ? "bold" : "normal"}
-                borderBottom={(location.pathname === '/administration') ? "2px solid" : "2px solid transparent"}
-                borderColor={(location.pathname === '/administration') ? textColor : "transparent"}
-                borderRadius="0" 
-                bg="transparent"
+                  fontWeight={(location.pathname === '/administration') ? "bold" : "normal"}
+                  borderBottom={(location.pathname === '/administration') ? "2px solid" : "2px solid transparent"}
+                  borderColor={(location.pathname === '/administration') ? textColor : "transparent"}
+                  borderRadius="0"
+                  bg="transparent"
                   color="inherit"
                   _hover={{ color: hoverTextColor }}
                   leftIcon={<MdAdminPanelSettings />}
@@ -250,7 +250,7 @@ export const NavBar = () => {
                 fontWeight={location.pathname.startsWith('/cases') ? "bold" : "normal"}
                 borderBottom={location.pathname.startsWith('/cases') ? "2px solid" : "2px solid transparent"}
                 borderColor={location.pathname.startsWith('/cases') ? textColor : "transparent"}
-                borderRadius="0" 
+                borderRadius="0"
                 bg="transparent"
                 color="inherit"
                 _hover={{ color: hoverTextColor }}
@@ -278,11 +278,11 @@ export const NavBar = () => {
                 <Button
                   onClick={() => navigate(`/administration`, { replace: true })}
                   variant="ghost"
-                fontWeight={(location.pathname === '/administration') ? "bold" : "normal"}
-                borderBottom={(location.pathname === '/administration') ? "2px solid" : "2px solid transparent"}
-                borderColor={(location.pathname === '/administration') ? textColor : "transparent"}
-                bg="transparent"
-                borderRadius="0"
+                  fontWeight={(location.pathname === '/administration') ? "bold" : "normal"}
+                  borderBottom={(location.pathname === '/administration') ? "2px solid" : "2px solid transparent"}
+                  borderColor={(location.pathname === '/administration') ? textColor : "transparent"}
+                  bg="transparent"
+                  borderRadius="0"
                   color="inherit"
                   _hover={{ color: hoverTextColor }}
                   leftIcon={<MdAdminPanelSettings />}

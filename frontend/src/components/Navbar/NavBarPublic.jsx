@@ -33,8 +33,8 @@ export const NavBarPublic = () => {
       <Box
         bg={bgColor} // Softer dark mode navbar
         color={textColor} // Softer text color
-        border="1px solid"
-        borderColor="gray.300"
+        // border="1px solid"
+        // borderColor="gray.300"
         position={'relative'}
       >
         <Flex

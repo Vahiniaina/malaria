@@ -118,9 +118,14 @@ function App() {
                           <Flex direction={{ base: "column", md: "row" }} h="90vh" w="100vw">
                             {/* Mobile: Bouton et Drawer visible en base seulement */}
                             <Box display={{ base: "block", md: "none" }} p={4}>
-                              <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
-                                Open Case List
-                              </Button>
+                              <IconButton
+                                aria-label="Ouvrir/Fermer le menu"
+                                icon={isOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                                onClick={onToggle}
+                                variant="ghost"
+                                size="md"
+                                colorScheme="teal"
+                              />
 
                               <Drawer
                                 closeOnInteractOutside={false}
@@ -195,9 +200,14 @@ function App() {
                             {/* SIDEBAR: CaseList + Footer (visible md+) */}
 
                             <Box display={{ md: "none" }}>
-                              <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
-                                Open Case List
-                              </Button>
+                              <IconButton
+                                aria-label="Ouvrir/Fermer le menu"
+                                icon={isOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                                onClick={onToggle}
+                                variant="ghost"
+                                size="md"
+                                colorScheme="teal"
+                              />
 
                               <Drawer closeOnInteractOutside={false}
                                 isOpen={isOpen}
@@ -353,7 +363,7 @@ function App() {
                         }
                       />
 
-<Route
+                      <Route
                         path="user_management"
                         element={
                           <Authenticated>

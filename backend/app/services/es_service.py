@@ -101,7 +101,7 @@ class ExpertSystem:
                 result={"treatment":
                         {
                             "medicament": f["medicament"], 
-                            "dose":"Voir posologie"
+                            "dose":f["duree"]
                         }
                        }
         return result

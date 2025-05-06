@@ -44,7 +44,7 @@ export const Register = () => {
     }
   };
 
-  const role = watch("role", "");
+  const role = watch("role", "simple");
 
   return (
     <Flex height="100vh" alignItems="center" justifyContent="center">
@@ -112,7 +112,7 @@ export const Register = () => {
               }}
             >
               <option value="simple">Utilisateur simple</option>
-              <option value="doctor">Médecin</option>
+              <option value="medecin">Médecin</option>
             </Select>
             <FormErrorMessage>
               {errors.role && errors.role.message}
@@ -120,27 +120,22 @@ export const Register = () => {
           </FormControl>
 
           {/* Code visible seulement si Médecin est sélectionné */}
-          {role === "doctor" && (
-            <FormControl isInvalid={errors.code}>
-              <Input
-                placeholder="Code médecin"
-                type="text"
-                backdropBlur="gray.600"
-                size="lg"
-                mt={6}
-                {...register("code", {
-                  required: role === "doctor" ? "Le code médecin est requis" : false,
-                  minLength: {
-                    value: 4,
-                    message: "Le code doit contenir au moins 4 caractères",
-                  },
-                })}
-              />
-              <FormErrorMessage>
-                {errors.code && errors.code.message}
-              </FormErrorMessage>
-            </FormControl>
-          )}
+          <Input
+            placeholder="Code médecin"
+            type="text"
+            backdropBlur="gray.600"
+            defaultValue="1234"
+            size="lg"
+            mt={6}
+            style={{ display: role !== "simple" ? "block" : "none" }}
+            {...register("code", {
+              required: role === "medecin" ? "Le code médecin est requis" : false,
+              minLength: {
+                value: 4,
+                message: "Le code doit contenir au moins 4 caractères",
+              },
+            })}
+          />
 
           <FormControl isInvalid={errors.password}>
             <Input
